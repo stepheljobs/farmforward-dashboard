@@ -37,7 +37,7 @@ export default function Index({ cropPlanners }: Props) {
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-2xl font-semibold">Crop Planners</h2>
                                 <Button onClick={() => router.visit(route('crop-planners.create'))}>
-                                    Create New Plan
+                                    Add Data
                                 </Button>
                             </div>
 
