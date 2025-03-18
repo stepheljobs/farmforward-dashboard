@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CropCommitment extends Model
+class CropPlanner extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -17,10 +17,22 @@ class CropCommitment extends Model
      */
     protected $fillable = [
         'farmer_id',
+        'consultant_id',
         'crop_type_id',
+        'planned_area_hectares',
         'estimated_quantity',
+        'planned_planting_date',
         'expected_harvest_date',
+        'consultant_notes',
+        'farmer_notes',
         'status',
+        'consultant_requested_at',
+        'farmer_responded_at',
+        'location',
+        'variety',
+        'volume_inputs',
+        'volume_inputs_type',
+        'contact_number'
     ];
 
     /**
@@ -29,12 +41,17 @@ class CropCommitment extends Model
      * @var array<string, string>
      */
     protected $casts = [
+        'planned_area_hectares' => 'float',
         'estimated_quantity' => 'float',
+        'planned_planting_date' => 'date',
         'expected_harvest_date' => 'date',
+        'consultant_requested_at' => 'datetime',
+        'farmer_responded_at' => 'datetime',
+        'volume_inputs' => 'float'
     ];
 
     /**
-     * Get the farmer that owns the crop commitment.
+     * Get the farmer that owns the crop planner.
      */
     public function farmer()
     {
@@ -42,7 +59,15 @@ class CropCommitment extends Model
     }
 
     /**
-     * Get the crop type that the commitment is for.
+     * Get the consultant that created the crop planner.
+     */
+    public function consultant()
+    {
+        return $this->belongsTo(User::class, 'consultant_id');
+    }
+
+    /**
+     * Get the crop type that is being planned.
      */
     public function cropType()
     {
