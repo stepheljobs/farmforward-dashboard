@@ -1,9 +1,9 @@
 import { Head, useForm } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import { CropArrival } from '@/types/crop-arrival';
-import { Farmer } from '@/types/farmer';
-import { CropType } from '@/types/crop-type';
-import { Field } from '@/types/field';
+import { Farmer } from '@/types/crop-planner';
+import { CropType } from '@/types';
+import { Field } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,6 +15,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import AppLayout from '@/layouts/app-layout';
+
 
 interface Props extends PageProps {
     cropArrival: CropArrival;

@@ -59,7 +59,7 @@ export default function Index({ cropArrivals }: Props) {
                                             <TableCell>
                                                 {arrival.farmer.first_name} {arrival.farmer.last_name}
                                             </TableCell>
-                                            <TableCell>{arrival.cropType.name}</TableCell>
+                                            <TableCell>{arrival.crop_type.name}</TableCell>
                                             <TableCell>
                                                 {format(new Date(arrival.received_date), 'MMM d, yyyy')}
                                             </TableCell>

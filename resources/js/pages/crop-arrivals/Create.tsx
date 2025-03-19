@@ -1,8 +1,8 @@
 import { Head, useForm } from '@inertiajs/react';
 import { PageProps } from '@/types';
-import { Farmer } from '@/types/farmer';
-import { CropType } from '@/types/crop-type';
-import { Field } from '@/types/field';
+import { Farmer } from '@/types/crop-planner';
+import { CropType } from '@/types/crop-planner';
+import { Field } from '@/types/crop-arrival';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -123,7 +123,7 @@ export default function Create({ farmers, cropTypes, fields }: Props) {
                                             <SelectContent>
                                                 {cropTypes.map(cropType => (
                                                     <SelectItem key={cropType.id} value={cropType.id.toString()}>
-                                                        {cropType.name}
+                                                        {crop_type.name}
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>

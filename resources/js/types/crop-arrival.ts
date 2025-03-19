@@ -27,7 +27,7 @@ export interface CropArrival {
     };
 }
 
-interface Field {
+export interface Field {
     id: number;
     name: string;
 } 

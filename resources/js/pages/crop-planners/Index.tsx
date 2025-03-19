@@ -58,7 +58,7 @@ export default function Index({ cropPlanners }: Props) {
                                             <TableCell>
                                                 {planner.farmer.first_name} {planner.farmer.last_name}
                                             </TableCell>
-                                            <TableCell>{planner.cropType.name}</TableCell>
+                                            <TableCell>{planner.crop_type.name}</TableCell>
                                             <TableCell>{planner.planned_area_hectares}</TableCell>
                                             <TableCell>
                                                 {format(new Date(planner.planned_planting_date), 'PPP')}

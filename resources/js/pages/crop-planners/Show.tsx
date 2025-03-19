@@ -4,6 +4,7 @@ import { CropPlanner } from '@/types/crop-planner';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { router } from '@inertiajs/core';
+import AppLayout from '@/layouts/app-layout';
 
 interface Props extends PageProps {
     cropPlanner: CropPlanner;
@@ -18,8 +19,8 @@ export default function Show({ cropPlanner }: Props) {
     };
 
     return (
-        <>
-            <Head title={`Crop Plan - ${cropPlanner.cropType.name}`} />
+        <AppLayout>
+            <Head title={`Crop Plan - ${cropPlanner.crop_type.name}`} />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -55,7 +56,7 @@ export default function Show({ cropPlanner }: Props) {
                                         </div>
                                         <div>
                                             <dt className="text-sm font-medium text-gray-500">Crop Type</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">{cropPlanner.cropType.name}</dd>
+                                            <dd className="mt-1 text-sm text-gray-900">{cropPlanner.crop_type.name}</dd>
                                         </div>
                                         <div>
                                             <dt className="text-sm font-medium text-gray-500">Status</dt>
@@ -154,28 +155,10 @@ export default function Show({ cropPlanner }: Props) {
                                     </dl>
                                 </div>
                             </div>
-
-                            {cropPlanner.status === 'pending_farmer' && (
-                                <div className="mt-6 flex justify-end gap-4">
-                                    <Button
-                                        variant="outline"
-                                        onClick={() => handleStatusUpdate('rejected')}
-                                        className="bg-red-50 text-red-700 hover:bg-red-100"
-                                    >
-                                        Reject Plan
-                                    </Button>
-                                    <Button
-                                        onClick={() => handleStatusUpdate('approved')}
-                                        className="bg-green-50 text-green-700 hover:bg-green-100"
-                                    >
-                                        Approve Plan
-                                    </Button>
-                                </div>
-                            )}
                         </div>
                     </div>
                 </div>
             </div>
-        </>
+        </AppLayout>
     );
 } 

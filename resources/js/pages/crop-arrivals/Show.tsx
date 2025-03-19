@@ -5,12 +5,43 @@ import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { router } from '@inertiajs/core';
 import AppLayout from '@/layouts/app-layout';
+import CropArrivalReceipt from '@/components/receipts/CropArrivalReceipt';
+import { useRef } from 'react';
+import { ArrowLeftIcon } from 'lucide-react';
+import { PencilIcon } from 'lucide-react';
+import { PrinterIcon } from 'lucide-react';
 
 interface Props extends PageProps {
     cropArrival: CropArrival;
 }
 
 export default function Show({ cropArrival }: Props) {
+    const receiptRef = useRef<HTMLDivElement>(null);
+
+    const handlePrint = () => {
+        if (receiptRef.current) {
+            const printWindow = window.open('', '_blank');
+            if (printWindow) {
+                printWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>Crop Arrival Receipt - ${cropArrival.stub_no}</title>
+                            <script src="https://cdn.tailwindcss.com"></script>
+                        </head>
+                        <body>
+                            ${receiptRef.current.innerHTML}
+                        </body>
+                    </html>
+                `);
+                printWindow.document.close();
+                printWindow.focus();
+                setTimeout(() => {
+                    printWindow.print();
+                }, 500);
+            }
+        }
+    };
+
     return (
         <AppLayout>
             <Head title={`Crop Arrival - ${cropArrival.stub_no}`} />
@@ -24,14 +55,23 @@ export default function Show({ cropArrival }: Props) {
                                 <div className="flex gap-2">
                                     <Button
                                         variant="outline"
+                                        onClick={handlePrint}
+                                    >
+                                        <PrinterIcon className="w-4 h-4 mr-2" />
+                                        Print Receipt
+                                    </Button>
+                                    <Button
+                                        variant="outline"
                                         onClick={() => router.visit(route('crop-arrivals.edit', cropArrival.id))}
                                     >
+                                        <PencilIcon className="w-4 h-4 mr-2" />
                                         Edit
                                     </Button>
                                     <Button
                                         variant="outline"
                                         onClick={() => router.visit(route('crop-arrivals.index'))}
                                     >
+                                        <ArrowLeftIcon className="w-4 h-4 mr-2" />
                                         Back to List
                                     </Button>
                                 </div>
@@ -63,7 +103,7 @@ export default function Show({ cropArrival }: Props) {
                                         </div>
                                         <div>
                                             <dt className="text-sm font-medium text-gray-500">Crop Type</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">{cropArrival.cropType.name}</dd>
+                                            <dd className="mt-1 text-sm text-gray-900">{cropArrival.crop_type.name}</dd>
                                         </div>
                                     </dl>
                                 </div>
@@ -108,6 +148,13 @@ export default function Show({ cropArrival }: Props) {
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            {/* Hidden receipt component for printing */}
+            <div className="hidden">
+                <div ref={receiptRef}>
+                    <CropArrivalReceipt cropArrival={cropArrival} />
                 </div>
             </div>
         </AppLayout>

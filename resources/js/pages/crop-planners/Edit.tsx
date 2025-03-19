@@ -12,7 +12,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-
+import AppLayout from '@/layouts/app-layout';
 interface Props extends PageProps {
     cropPlanner: CropPlanner;
     cropTypes: CropType[];
@@ -39,7 +39,7 @@ export default function Edit({ cropPlanner, cropTypes }: Props) {
     };
 
     return (
-        <>
+        <AppLayout>
             <Head title="Edit Crop Plan" />
 
             <div className="py-12">
@@ -230,6 +230,6 @@ export default function Edit({ cropPlanner, cropTypes }: Props) {
                     </div>
                 </div>
             </div>
-        </>
+        </AppLayout>
     );
 } 
