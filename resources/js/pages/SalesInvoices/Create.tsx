@@ -135,7 +135,7 @@ export default function Create({ cropArrivals }: Props) {
                                     {data.items.map((item, index) => (
                                         <div key={index} className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 border rounded-lg">
                                             <div className="space-y-2">
-                                                <Label>Crop Arrival</Label>
+                                                <Label>Stub No.</Label>
                                                 <Select
                                                     value={item.crop_arrival_stub}
                                                     onValueChange={(value) => {
@@ -222,7 +222,7 @@ export default function Create({ cropArrivals }: Props) {
 
                                             <div className="space-y-2">
                                                 <Label>Notes</Label>
-                                                <Textarea
+                                                <Input
                                                     value={item.notes}
                                                     onChange={(e) => updateItem(index, 'notes', e.target.value)}
                                                 />
@@ -233,7 +233,7 @@ export default function Create({ cropArrivals }: Props) {
                                                 )}
                                             </div>
 
-                                            <div className="flex items-end">
+                                            <div className="flex self-center mt-[12px]">
                                                 <Button
                                                     type="button"
                                                     variant="destructive"

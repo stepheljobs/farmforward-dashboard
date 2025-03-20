@@ -36,18 +36,18 @@ interface FormData {
 
 export default function Edit({ salesInvoice, buyers, cropArrivals }: Props) {
     const { data, setData, put, processing, errors } = useForm<FormData>({
-        invoice_number: salesInvoice.invoice_number,
-        date: salesInvoice.date.split('T')[0],
-        buyer_id: salesInvoice.buyer_id.toString(),
+        invoice_number: salesInvoice.invoice_number || '',
+        date: salesInvoice.date ? salesInvoice.date.split('T')[0] : new Date().toISOString().split('T')[0],
+        buyer_id: salesInvoice.buyer_id ? salesInvoice.buyer_id.toString() : '',
         items: salesInvoice.items.map((item) => ({
             id: item.id,
-            crop_arrival_stub: item.crop_arrival_stub,
-            quantity: item.quantity,
-            unit_price: item.unit_price,
-            crop_type: item.crop_type,
+            crop_arrival_stub: item.crop_arrival_stub || '',
+            quantity: item.quantity || 0,
+            unit_price: item.unit_price || 0,
+            crop_type: item.crop_type || '',
             notes: item.notes || '',
         })),
-        tax: salesInvoice.tax,
+        tax: salesInvoice.tax || 0,
     });
 
     const addItem = () => {
@@ -120,42 +120,6 @@ export default function Edit({ salesInvoice, buyers, cropArrivals }: Props) {
                                         )}
                                     </div>
 
-                                    <div className="space-y-2">
-                                        <Label htmlFor="buyer_id">Buyer</Label>
-                                        <Select
-                                            value={data.buyer_id}
-                                            onValueChange={(value) => setData('buyer_id', value)}
-                                        >
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select a buyer" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {buyers.map((buyer) => (
-                                                    <SelectItem key={buyer.id} value={buyer.id.toString()}>
-                                                        {buyer.name}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                        {errors.buyer_id && (
-                                            <p className="text-sm text-red-600">{errors.buyer_id}</p>
-                                        )}
-                                    </div>
-
-                                    <div className="space-y-2">
-                                        <Label htmlFor="tax">Tax Amount</Label>
-                                        <Input
-                                            id="tax"
-                                            type="number"
-                                            step="0.01"
-                                            value={data.tax}
-                                            onChange={(e) => setData('tax', parseFloat(e.target.value))}
-                                            required
-                                        />
-                                        {errors.tax && (
-                                            <p className="text-sm text-red-600">{errors.tax}</p>
-                                        )}
-                                    </div>
                                 </div>
 
                                 <div className="space-y-4">
@@ -175,7 +139,7 @@ export default function Edit({ salesInvoice, buyers, cropArrivals }: Props) {
                                     {data.items.map((item, index) => (
                                         <div key={index} className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 border rounded-lg">
                                             <div className="space-y-2">
-                                                <Label>Crop Arrival</Label>
+                                                <Label>Stub No.</Label>
                                                 <Select
                                                     value={item.crop_arrival_stub}
                                                     onValueChange={(value) => {
@@ -257,7 +221,7 @@ export default function Edit({ salesInvoice, buyers, cropArrivals }: Props) {
 
                                             <div className="space-y-2">
                                                 <Label>Notes</Label>
-                                                <Textarea
+                                                <Input
                                                     value={item.notes}
                                                     onChange={(e) => updateItem(index, 'notes', e.target.value)}
                                                 />
@@ -268,7 +232,7 @@ export default function Edit({ salesInvoice, buyers, cropArrivals }: Props) {
                                                 )}
                                             </div>
 
-                                            <div className="flex items-end">
+                                            <div className="flex self-center mt-[12px]">
                                                 <Button
                                                     type="button"
                                                     variant="destructive"

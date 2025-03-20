@@ -51,7 +51,6 @@ export default function Index({ salesInvoices }: Props) {
                                         <TableRow>
                                             <TableHead>Invoice Number</TableHead>
                                             <TableHead>Date</TableHead>
-                                            <TableHead>Buyer</TableHead>
                                             <TableHead>Total Amount</TableHead>
                                             <TableHead>Status</TableHead>
                                             <TableHead>Payment Status</TableHead>
@@ -65,9 +64,8 @@ export default function Index({ salesInvoices }: Props) {
                                                 <TableCell>
                                                     {format(new Date(invoice.date), 'PPP')}
                                                 </TableCell>
-                                                <TableCell>{invoice.buyer.name}</TableCell>
                                                 <TableCell>
-                                                    ${invoice.total_amount.toFixed(2)}
+                                                    ${Number(invoice.total_amount).toFixed(2)}
                                                 </TableCell>
                                                 <TableCell>
                                                     <Badge

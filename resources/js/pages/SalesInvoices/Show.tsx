@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { Link } from '@inertiajs/react';
+import { Barcode } from '@/components/ui/barcode';
 import {
     Table,
     TableBody,
@@ -62,6 +63,16 @@ export default function Show({ salesInvoice }: Props) {
                                         <div>
                                             <span className="font-medium">Invoice Number:</span>{' '}
                                             {salesInvoice.invoice_number}
+                                        </div>
+                                        <div>
+                                            <span className="font-medium">Barcode:</span>{' '}
+                                            <div className="mt-1">
+                                                <Barcode 
+                                                    value={salesInvoice.invoice_number}
+                                                    height={48}
+                                                    width={2}
+                                                />
+                                            </div>
                                         </div>
                                         <div>
                                             <span className="font-medium">Date:</span>{' '}
