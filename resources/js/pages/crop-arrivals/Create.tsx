@@ -123,7 +123,7 @@ export default function Create({ farmers, cropTypes, fields }: Props) {
                                             <SelectContent>
                                                 {cropTypes.map(cropType => (
                                                     <SelectItem key={cropType.id} value={cropType.id.toString()}>
-                                                        {crop_type.name}
+                                                        {cropType.name}
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>
