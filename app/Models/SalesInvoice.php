@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class SalesInvoice extends Model
 {
@@ -15,7 +16,6 @@ class SalesInvoice extends Model
         'date',
         'buyer_id',
         'subtotal',
-        'tax',
         'total_amount',
         'status',
         'payment_status',
@@ -24,9 +24,13 @@ class SalesInvoice extends Model
     protected $casts = [
         'date' => 'datetime',
         'subtotal' => 'decimal:2',
-        'tax' => 'decimal:2',
         'total_amount' => 'decimal:2',
     ];
+
+    public function buyer()
+    {
+        return $this->belongsTo(Buyer::class);
+    }
 
     public function items(): HasMany
     {

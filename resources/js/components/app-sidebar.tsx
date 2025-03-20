@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Users, ClipboardList, UserCog, DollarSign, FileText, Settings, Sprout, Truck } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, Users, ClipboardList, UserCog, DollarSign, FileText, Settings, Sprout, Truck, Receipt } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const operationsNavItems: NavItem[] = [
@@ -22,6 +22,11 @@ const operationsNavItems: NavItem[] = [
         title: 'Crop Arrivals',
         href: '/crop-arrivals',
         icon: Truck,
+    },
+    {
+        title: 'Sales Invoices',
+        href: '/sales-invoices',
+        icon: Receipt,
     },
     {
         title: 'Tasks',

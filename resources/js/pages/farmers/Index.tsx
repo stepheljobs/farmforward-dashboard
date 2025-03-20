@@ -30,12 +30,12 @@ export default function Index({ auth, farmers }: Props) {
     return (
         <AppLayout>
             <Head title="Farmers" />
-
+            
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between">
-                            <CardTitle>Farmers List</CardTitle>
+                            <h2 className="text-2xl font-semibold">Farmers List</h2>
                             <Link href={route('farmers.create')}>
                                 <Button>Register New Farmer</Button>
                             </Link>

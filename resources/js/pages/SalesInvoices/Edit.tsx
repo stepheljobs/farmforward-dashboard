@@ -1,0 +1,304 @@
+import { Head, useForm } from '@inertiajs/react';
+import { PageProps } from '@/types';
+import { SalesInvoice } from '@/types/sales-invoice';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Plus, Trash2 } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import AppLayout from '@/layouts/app-layout';
+
+interface Props extends PageProps {
+    salesInvoice: SalesInvoice;
+    buyers: Array<{ id: number; name: string }>;
+    cropArrivals: Array<{ stub_no: string; crop_type: string }>;
+}
+
+interface InvoiceItem {
+    id?: number;
+    crop_arrival_stub: string;
+    quantity: number;
+    unit_price: number;
+    crop_type: string;
+    notes?: string;
+}
+
+interface FormData {
+    invoice_number: string;
+    date: string;
+    buyer_id: string;
+    items: InvoiceItem[];
+    tax: number;
+    [key: string]: any; // Add index signature for Inertia.js form type constraint
+}
+
+export default function Edit({ salesInvoice, buyers, cropArrivals }: Props) {
+    const { data, setData, put, processing, errors } = useForm<FormData>({
+        invoice_number: salesInvoice.invoice_number,
+        date: salesInvoice.date.split('T')[0],
+        buyer_id: salesInvoice.buyer_id.toString(),
+        items: salesInvoice.items.map((item) => ({
+            id: item.id,
+            crop_arrival_stub: item.crop_arrival_stub,
+            quantity: item.quantity,
+            unit_price: item.unit_price,
+            crop_type: item.crop_type,
+            notes: item.notes || '',
+        })),
+        tax: salesInvoice.tax,
+    });
+
+    const addItem = () => {
+        setData('items', [
+            ...data.items,
+            { crop_arrival_stub: '', quantity: 1, unit_price: 0, crop_type: '', notes: '' },
+        ]);
+    };
+
+    const removeItem = (index: number) => {
+        setData(
+            'items',
+            data.items.filter((_, i) => i !== index)
+        );
+    };
+
+    const updateItem = (index: number, field: keyof InvoiceItem, value: any) => {
+        const newItems = [...data.items];
+        newItems[index] = { ...newItems[index], [field]: value };
+        setData('items', newItems);
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        put(route('sales-invoices.update', salesInvoice.id));
+    };
+
+    const getItemError = (index: number, field: keyof InvoiceItem) => {
+        const errorKey = `items.${index}.${field}`;
+        return errors[errorKey as keyof typeof errors];
+    };
+
+    return (
+        <AppLayout>
+            <Head title={`Edit Sales Invoice ${salesInvoice.invoice_number}`} />
+
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Edit Sales Invoice</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="invoice_number">Invoice Number</Label>
+                                        <Input
+                                            id="invoice_number"
+                                            value={data.invoice_number}
+                                            onChange={(e) => setData('invoice_number', e.target.value)}
+                                            required
+                                        />
+                                        {errors.invoice_number && (
+                                            <p className="text-sm text-red-600">{errors.invoice_number}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="date">Date</Label>
+                                        <Input
+                                            id="date"
+                                            type="date"
+                                            value={data.date}
+                                            onChange={(e) => setData('date', e.target.value)}
+                                            required
+                                        />
+                                        {errors.date && (
+                                            <p className="text-sm text-red-600">{errors.date}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="buyer_id">Buyer</Label>
+                                        <Select
+                                            value={data.buyer_id}
+                                            onValueChange={(value) => setData('buyer_id', value)}
+                                        >
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select a buyer" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {buyers.map((buyer) => (
+                                                    <SelectItem key={buyer.id} value={buyer.id.toString()}>
+                                                        {buyer.name}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        {errors.buyer_id && (
+                                            <p className="text-sm text-red-600">{errors.buyer_id}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="tax">Tax Amount</Label>
+                                        <Input
+                                            id="tax"
+                                            type="number"
+                                            step="0.01"
+                                            value={data.tax}
+                                            onChange={(e) => setData('tax', parseFloat(e.target.value))}
+                                            required
+                                        />
+                                        {errors.tax && (
+                                            <p className="text-sm text-red-600">{errors.tax}</p>
+                                        )}
+                                    </div>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div className="flex justify-between items-center">
+                                        <h3 className="text-lg font-medium">Items</h3>
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={addItem}
+                                        >
+                                            <Plus className="w-4 h-4 mr-2" />
+                                            Add Item
+                                        </Button>
+                                    </div>
+
+                                    {data.items.map((item, index) => (
+                                        <div key={index} className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 border rounded-lg">
+                                            <div className="space-y-2">
+                                                <Label>Crop Arrival</Label>
+                                                <Select
+                                                    value={item.crop_arrival_stub}
+                                                    onValueChange={(value) => {
+                                                        const selectedCrop = cropArrivals.find(
+                                                            (crop) => crop.stub_no === value
+                                                        );
+                                                        updateItem(index, 'crop_arrival_stub', value);
+                                                        if (selectedCrop) {
+                                                            updateItem(index, 'crop_type', selectedCrop.crop_type);
+                                                        }
+                                                    }}
+                                                >
+                                                    <SelectTrigger>
+                                                        <SelectValue placeholder="Select crop arrival" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        {cropArrivals.map((crop) => (
+                                                            <SelectItem key={crop.stub_no} value={crop.stub_no}>
+                                                                {crop.stub_no} - {crop.crop_type}
+                                                            </SelectItem>
+                                                        ))}
+                                                    </SelectContent>
+                                                </Select>
+                                                {getItemError(index, 'crop_arrival_stub') && (
+                                                    <p className="text-sm text-red-600">
+                                                        {getItemError(index, 'crop_arrival_stub')}
+                                                    </p>
+                                                )}
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <Label>Quantity</Label>
+                                                <Input
+                                                    type="number"
+                                                    value={item.quantity}
+                                                    onChange={(e) =>
+                                                        updateItem(index, 'quantity', parseInt(e.target.value))
+                                                    }
+                                                    required
+                                                />
+                                                {getItemError(index, 'quantity') && (
+                                                    <p className="text-sm text-red-600">
+                                                        {getItemError(index, 'quantity')}
+                                                    </p>
+                                                )}
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <Label>Unit Price</Label>
+                                                <Input
+                                                    type="number"
+                                                    step="0.01"
+                                                    value={item.unit_price}
+                                                    onChange={(e) =>
+                                                        updateItem(index, 'unit_price', parseFloat(e.target.value))
+                                                    }
+                                                    required
+                                                />
+                                                {getItemError(index, 'unit_price') && (
+                                                    <p className="text-sm text-red-600">
+                                                        {getItemError(index, 'unit_price')}
+                                                    </p>
+                                                )}
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <Label>Crop Type</Label>
+                                                <Input
+                                                    value={item.crop_type}
+                                                    onChange={(e) => updateItem(index, 'crop_type', e.target.value)}
+                                                    required
+                                                />
+                                                {getItemError(index, 'crop_type') && (
+                                                    <p className="text-sm text-red-600">
+                                                        {getItemError(index, 'crop_type')}
+                                                    </p>
+                                                )}
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <Label>Notes</Label>
+                                                <Textarea
+                                                    value={item.notes}
+                                                    onChange={(e) => updateItem(index, 'notes', e.target.value)}
+                                                />
+                                                {getItemError(index, 'notes') && (
+                                                    <p className="text-sm text-red-600">
+                                                        {getItemError(index, 'notes')}
+                                                    </p>
+                                                )}
+                                            </div>
+
+                                            <div className="flex items-end">
+                                                <Button
+                                                    type="button"
+                                                    variant="destructive"
+                                                    size="sm"
+                                                    onClick={() => removeItem(index)}
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="flex justify-end space-x-4">
+                                    <Button
+                                        type="button"
+                                        variant="outline"
+                                        onClick={() => window.history.back()}
+                                    >
+                                        Cancel
+                                    </Button>
+                                    <Button type="submit" disabled={processing}>
+                                        Update Invoice
+                                    </Button>
+                                </div>
+                            </form>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </AppLayout>
+    );
+} 
