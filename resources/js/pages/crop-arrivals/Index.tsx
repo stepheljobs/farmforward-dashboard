@@ -13,6 +13,8 @@ import {
 } from "@/components/ui/table";
 import { format } from 'date-fns';
 import AppLayout from '@/layouts/app-layout';
+import { Pencil } from 'lucide-react';
+import { Eye } from 'lucide-react';
 
 interface Props extends PageProps {
     cropArrivals: {
@@ -76,17 +78,17 @@ export default function Index({ cropArrivals }: Props) {
                                                 <div className="flex gap-2">
                                                     <Button
                                                         variant="outline"
-                                                        size="sm"
+                                                        size="icon"
                                                         onClick={() => router.visit(route('crop-arrivals.show', arrival.id))}
                                                     >
-                                                        View
+                                                        <Eye className="h-4 w-4" />
                                                     </Button>
                                                     <Button
-                                                        variant="outline"
-                                                        size="sm"
+                                                        variant="outline" 
+                                                        size="icon"
                                                         onClick={() => router.visit(route('crop-arrivals.edit', arrival.id))}
                                                     >
-                                                        Edit
+                                                        <Pencil className="h-4 w-4" />
                                                     </Button>
                                                 </div>
                                             </TableCell>

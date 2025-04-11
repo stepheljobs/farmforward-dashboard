@@ -1,5 +1,5 @@
 import { Head, useForm } from '@inertiajs/react';
-import { PageProps } from '@/types';
+import { BreadcrumbItem, PageProps } from '@/types';
 import { SalesInvoice } from '@/types/sales-invoice';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -35,6 +35,13 @@ interface FormData {
     tax: number;
     [key: string]: any; // Add index signature for Inertia.js form type constraint
 }
+
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Sales Invoice',
+        href: `/sales-invoices`,
+    },
+];
 
 export default function Edit({ salesInvoice, buyers, cropArrivals }: Props) {
     const { data, setData, put, processing, errors } = useForm<FormData>({
@@ -84,7 +91,7 @@ export default function Edit({ salesInvoice, buyers, cropArrivals }: Props) {
     };
 
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={`Edit Sales Invoice ${salesInvoice.invoice_number}`} />
 
             <div className="py-12">
@@ -103,6 +110,7 @@ export default function Edit({ salesInvoice, buyers, cropArrivals }: Props) {
                                             value={data.invoice_number}
                                             onChange={(e) => setData('invoice_number', e.target.value)}
                                             required
+                                            disabled
                                         />
                                         {errors.invoice_number && (
                                             <p className="text-sm text-red-600">{errors.invoice_number}</p>
@@ -139,114 +147,129 @@ export default function Edit({ salesInvoice, buyers, cropArrivals }: Props) {
                                         </Button>
                                     </div>
 
-                                    {data.items.map((item, index) => (
-                                        <div key={index} className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 border rounded-lg">
-                                            <div className="space-y-2">
-                                                <Label>Stub No.</Label>
-                                                <Select
-                                                    value={item.crop_arrival_stub}
-                                                    onValueChange={(value) => {
-                                                        const selectedCrop = cropArrivals.find(
-                                                            (crop) => crop.stub_no === value
-                                                        );
-                                                        updateItem(index, 'crop_arrival_stub', value);
-                                                        if (selectedCrop) {
-                                                            updateItem(index, 'crop_type', selectedCrop.crop_type);
-                                                        }
-                                                    }}
-                                                >
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Select crop arrival" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {cropArrivals.map((crop) => (
-                                                            <SelectItem key={crop.stub_no} value={crop.stub_no}>
-                                                                {crop.stub_no} - {crop.crop_type}
-                                                            </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
-                                                {getItemError(index, 'crop_arrival_stub') && (
-                                                    <p className="text-sm text-red-600">
-                                                        {getItemError(index, 'crop_arrival_stub')}
-                                                    </p>
-                                                )}
-                                            </div>
-
-                                            <div className="space-y-2">
-                                                <Label>Quantity</Label>
-                                                <Input
-                                                    type="number"
-                                                    value={item.quantity}
-                                                    onChange={(e) =>
-                                                        updateItem(index, 'quantity', parseInt(e.target.value))
-                                                    }
-                                                    required
-                                                />
-                                                {getItemError(index, 'quantity') && (
-                                                    <p className="text-sm text-red-600">
-                                                        {getItemError(index, 'quantity')}
-                                                    </p>
-                                                )}
-                                            </div>
-
-                                            <div className="space-y-2">
-                                                <Label>Unit Price</Label>
-                                                <Input
-                                                    type="number"
-                                                    step="0.01"
-                                                    value={item.unit_price}
-                                                    onChange={(e) =>
-                                                        updateItem(index, 'unit_price', parseFloat(e.target.value))
-                                                    }
-                                                    required
-                                                />
-                                                {getItemError(index, 'unit_price') && (
-                                                    <p className="text-sm text-red-600">
-                                                        {getItemError(index, 'unit_price')}
-                                                    </p>
-                                                )}
-                                            </div>
-
-                                            <div className="space-y-2">
-                                                <Label>Crop Type</Label>
-                                                <Input
-                                                    value={item.crop_type}
-                                                    onChange={(e) => updateItem(index, 'crop_type', e.target.value)}
-                                                    required
-                                                />
-                                                {getItemError(index, 'crop_type') && (
-                                                    <p className="text-sm text-red-600">
-                                                        {getItemError(index, 'crop_type')}
-                                                    </p>
-                                                )}
-                                            </div>
-
-                                            <div className="space-y-2">
-                                                <Label>Notes</Label>
-                                                <Input
-                                                    value={item.notes}
-                                                    onChange={(e) => updateItem(index, 'notes', e.target.value)}
-                                                />
-                                                {getItemError(index, 'notes') && (
-                                                    <p className="text-sm text-red-600">
-                                                        {getItemError(index, 'notes')}
-                                                    </p>
-                                                )}
-                                            </div>
-
-                                            <div className="flex self-center mt-[12px]">
-                                                <Button
-                                                    type="button"
-                                                    variant="destructive"
-                                                    size="sm"
-                                                    onClick={() => removeItem(index)}
-                                                >
-                                                    <Trash2 className="w-4 h-4" />
-                                                </Button>
-                                            </div>
+                                    {data.items.length === 0 ? (
+                                        <div className="flex flex-col items-center justify-center p-8 border rounded-lg border-dashed">
+                                            <p className="text-gray-500 mb-2">No items added yet</p>
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                size="sm"
+                                                onClick={addItem}
+                                            >
+                                                <Plus className="w-4 h-4 mr-2" />
+                                                Add Your First Item
+                                            </Button>
                                         </div>
-                                    ))}
+                                    ) : (
+                                        data.items.map((item, index) => (
+                                            <div key={index} className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 border rounded-lg">
+                                                <div className="space-y-2">
+                                                    <Label>Stub No.</Label>
+                                                    <Select
+                                                        value={item.crop_arrival_stub}
+                                                        onValueChange={(value) => {
+                                                            const selectedCrop = cropArrivals.find(
+                                                                (crop) => crop.stub_no === value
+                                                            );
+                                                            updateItem(index, 'crop_arrival_stub', value);
+                                                            if (selectedCrop) {
+                                                                updateItem(index, 'crop_type', selectedCrop.crop_type);
+                                                            }
+                                                        }}
+                                                    >
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Select crop arrival" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            {cropArrivals.map((crop) => (
+                                                                <SelectItem key={crop.stub_no} value={crop.stub_no}>
+                                                                    {crop.stub_no} - {crop.crop_type}
+                                                                </SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                    {getItemError(index, 'crop_arrival_stub') && (
+                                                        <p className="text-sm text-red-600">
+                                                            {getItemError(index, 'crop_arrival_stub')}
+                                                        </p>
+                                                    )}
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <Label>Quantity</Label>
+                                                    <Input
+                                                        type="number"
+                                                        value={item.quantity}
+                                                        onChange={(e) =>
+                                                            updateItem(index, 'quantity', parseInt(e.target.value))
+                                                        }
+                                                        required
+                                                    />
+                                                    {getItemError(index, 'quantity') && (
+                                                        <p className="text-sm text-red-600">
+                                                            {getItemError(index, 'quantity')}
+                                                        </p>
+                                                    )}
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <Label>Unit Price</Label>
+                                                    <Input
+                                                        type="number"
+                                                        step="0.01"
+                                                        value={item.unit_price}
+                                                        onChange={(e) =>
+                                                            updateItem(index, 'unit_price', parseFloat(e.target.value))
+                                                        }
+                                                        required
+                                                    />
+                                                    {getItemError(index, 'unit_price') && (
+                                                        <p className="text-sm text-red-600">
+                                                            {getItemError(index, 'unit_price')}
+                                                        </p>
+                                                    )}
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <Label>Crop Type</Label>
+                                                    <Input
+                                                        value={item.crop_type}
+                                                        onChange={(e) => updateItem(index, 'crop_type', e.target.value)}
+                                                        required
+                                                    />
+                                                    {getItemError(index, 'crop_type') && (
+                                                        <p className="text-sm text-red-600">
+                                                            {getItemError(index, 'crop_type')}
+                                                        </p>
+                                                    )}
+                                                </div>
+
+                                                <div className="space-y-2">
+                                                    <Label>Notes</Label>
+                                                    <Input
+                                                        value={item.notes}
+                                                        onChange={(e) => updateItem(index, 'notes', e.target.value)}
+                                                    />
+                                                    {getItemError(index, 'notes') && (
+                                                        <p className="text-sm text-red-600">
+                                                            {getItemError(index, 'notes')}
+                                                        </p>
+                                                    )}
+                                                </div>
+
+                                                <div className="flex self-center mt-[12px]">
+                                                    <Button
+                                                        type="button"
+                                                        variant="destructive"
+                                                        size="sm"
+                                                        onClick={() => removeItem(index)}
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        ))
+                                    )}
                                 </div>
 
                                 <div className="mt-6 space-y-2">
@@ -280,7 +303,7 @@ export default function Edit({ salesInvoice, buyers, cropArrivals }: Props) {
                                         Cancel
                                     </Button>
                                     <Button type="submit" disabled={processing}>
-                                        Update Invoice
+                                        Update Sales Invoice
                                     </Button>
                                 </div>
                             </form>

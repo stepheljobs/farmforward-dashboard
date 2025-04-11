@@ -1,8 +1,8 @@
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import { SalesInvoice } from '@/types/sales-invoice';
 import { Button } from '@/components/ui/button';
-import { Plus } from 'lucide-react';
+import { Eye, Plus, Pencil } from 'lucide-react';
 import { format } from 'date-fns';
 import {
     Table,
@@ -52,8 +52,8 @@ export default function Index({ salesInvoices }: Props) {
                                             <TableHead>Invoice Number</TableHead>
                                             <TableHead>Date</TableHead>
                                             <TableHead>Total Amount</TableHead>
-                                            <TableHead>Status</TableHead>
                                             <TableHead>Payment Status</TableHead>
+                                            <TableHead>Invoice Status</TableHead>
                                             <TableHead>Actions</TableHead>
                                         </TableRow>
                                     </TableHeader>
@@ -62,23 +62,10 @@ export default function Index({ salesInvoices }: Props) {
                                             <TableRow key={invoice.id}>
                                                 <TableCell>{invoice.invoice_number}</TableCell>
                                                 <TableCell>
-                                                    {format(new Date(invoice.date), 'PPP')}
+                                                    {format(new Date(invoice.date), 'MM/dd/yyyy')}
                                                 </TableCell>
                                                 <TableCell>
-                                                    ${Number(invoice.total_amount).toFixed(2)}
-                                                </TableCell>
-                                                <TableCell>
-                                                    <Badge
-                                                        variant={
-                                                            invoice.status === 'completed'
-                                                                ? 'default'
-                                                                : invoice.status === 'pending'
-                                                                ? 'secondary'
-                                                                : 'outline'
-                                                        }
-                                                    >
-                                                        {invoice.status}
-                                                    </Badge>
+                                                    ₱{Number(invoice.total_amount).toFixed(2)}
                                                 </TableCell>
                                                 <TableCell>
                                                     <Badge
@@ -93,26 +80,37 @@ export default function Index({ salesInvoices }: Props) {
                                                         {invoice.payment_status}
                                                     </Badge>
                                                 </TableCell>
+
+                                                <TableCell>
+                                                    <Badge
+                                                        variant={
+                                                            invoice.status === 'completed'
+                                                                ? 'default'
+                                                                : invoice.status === 'pending'
+                                                                ? 'secondary'
+                                                                : 'outline'
+                                                        }
+                                                    >
+                                                        {invoice.status}
+                                                    </Badge>
+                                                </TableCell>
+                                               
                                                 <TableCell>
                                                     <div className="flex space-x-2">
-                                                        <Link
-                                                            href={route(
-                                                                'sales-invoices.show',
-                                                                invoice.id
-                                                            )}
-                                                            className="text-blue-600 hover:text-blue-800"
+                                                        <Button
+                                                            variant="outline"
+                                                            size="icon"
+                                                            onClick={() => router.visit(route('sales-invoices.show', invoice.id))}
                                                         >
-                                                            View
-                                                        </Link>
-                                                        <Link
-                                                            href={route(
-                                                                'sales-invoices.edit',
-                                                                invoice.id
-                                                            )}
-                                                            className="text-green-600 hover:text-green-800"
+                                                            <Eye className="h-4 w-4" />
+                                                        </Button>
+                                                        <Button
+                                                            variant="outline"
+                                                            size="icon" 
+                                                            onClick={() => router.visit(route('sales-invoices.edit', invoice.id))}
                                                         >
-                                                            Edit
-                                                        </Link>
+                                                            <Pencil className="h-4 w-4" />
+                                                        </Button>
                                                     </div>
                                                 </TableCell>
                                             </TableRow>

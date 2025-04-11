@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -28,6 +27,8 @@ class DatabaseSeeder extends Seeder
             FarmerSeeder::class,
             FarmSeeder::class,
             CropArrivalSeeder::class,
+            SalesInvoiceSeeder::class,
+            BuyerSeeder::class,
         ]);
     }
 }
