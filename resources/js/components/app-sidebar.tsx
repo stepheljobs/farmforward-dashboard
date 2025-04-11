@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Users, ClipboardList, UserCog, DollarSign, FileText, Settings, Sprout, Truck, Receipt } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, Users, ClipboardList, UserCog, DollarSign, FileText, Settings, Sprout, Truck, Receipt, LineChart } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const operationsNavItems: NavItem[] = [
@@ -29,15 +29,10 @@ const operationsNavItems: NavItem[] = [
         icon: Receipt,
     },
     {
-        title: 'Tasks',
-        href: '/tasks',
-        icon: ClipboardList,
-    },
-    {
-        title: 'Reports',
-        href: '/reports',
-        icon: FileText,
-    },
+        title: 'Sales',
+        href: '/sales',
+        icon: DollarSign,
+    }
 ];
 
 const consultantsNavItems: NavItem[] = [
@@ -47,32 +42,32 @@ const consultantsNavItems: NavItem[] = [
         icon: Sprout,
     },
     {
-        title: 'Knowledge Base',
-        href: '/knowledge-base',
-        icon: BookOpen,
+        title: 'Crop Arrivals',
+        href: '/crop-arrivals',
+        icon: Truck,
     },
     {
-        title: 'Training',
-        href: '/training',
-        icon: Folder,
+        title: 'Crop Forecast',
+        href: '/crop-forecast',
+        icon: LineChart,
     },
 ];
 
 const financeNavItems: NavItem[] = [
     {
         title: 'Financial Overview',
-        href: '/finance',
+        href: '/financial-overview',
         icon: DollarSign,
     },
     {
-        title: 'Transactions',
-        href: '/transactions',
-        icon: FileText,
+        title: 'Sales',
+        href: '/sales',
+        icon: DollarSign,
     },
     {
-        title: 'Settings',
-        href: '/settings',
-        icon: Settings,
+        title: 'Withdrawal Requests',
+        href: '/withdrawals-requests',
+        icon: DollarSign,
     },
 ];
 

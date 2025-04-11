@@ -143,6 +143,7 @@ class SalesInvoiceController extends Controller
             'items.*.crop_type' => 'required|string',
             'items.*.notes' => 'nullable|string',
             'tax' => 'required|numeric|min:0',
+            'status' => 'required|in:draft,pending,approved,completed,cancelled',
         ]);
 
         try {
@@ -158,6 +159,7 @@ class SalesInvoiceController extends Controller
                 'subtotal' => $subtotal,
                 'tax' => $validated['tax'],
                 'total_amount' => $subtotal + $validated['tax'],
+                'status' => $validated['status'],
             ]);
 
             // Delete existing items

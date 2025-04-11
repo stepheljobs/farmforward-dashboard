@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('subtotal', 10, 2);
             $table->decimal('tax', 10, 2)->nullable();
             $table->decimal('total_amount', 10, 2);
-            $table->enum('status', ['draft', 'final', 'void'])->default('draft');
+            $table->enum('status', ['draft', 'pending', 'approved', 'completed', 'cancelled'])->default('draft');
             $table->enum('payment_status', ['pending', 'partial', 'paid'])->default('pending');
             $table->timestamps();
         });

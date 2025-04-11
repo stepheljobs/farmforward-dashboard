@@ -1,18 +1,15 @@
 import { Head } from '@inertiajs/react';
-import { PageProps } from '@/types';
+import { BreadcrumbItem, PageProps } from '@/types';
 import AppLayout from '@/layouts/app-layout';
-import { Button, Card, CardContent, CardHeader, CardTitle, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
+import { Button, Card, CardContent, CardHeader, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
 import { Link } from '@inertiajs/react';
-import { format } from 'date-fns';
 
 interface Farmer {
     id: number;
     first_name: string;
     last_name: string;
     email: string;
-    phone: string;
-    registration_date: string;
-    membership_renewal_date: string;
+    phone_number: string;
     profile_image: string | null;
 }
 
@@ -26,9 +23,16 @@ interface Props extends PageProps {
     };
 }
 
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Farmers',
+        href: '/farmers',
+    },
+];
+
 export default function Index({ auth, farmers }: Props) {
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Farmers" />
             
             <div className="py-12">
@@ -48,8 +52,6 @@ export default function Index({ auth, farmers }: Props) {
                                         <TableHead>Name</TableHead>
                                         <TableHead>Email</TableHead>
                                         <TableHead>Phone</TableHead>
-                                        <TableHead>Registration Date</TableHead>
-                                        <TableHead>Membership Renewal</TableHead>
                                         <TableHead>Actions</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -72,13 +74,7 @@ export default function Index({ auth, farmers }: Props) {
                                                 </div>
                                             </TableCell>
                                             <TableCell>{farmer.email}</TableCell>
-                                            <TableCell>{farmer.phone}</TableCell>
-                                            <TableCell>
-                                                {format(new Date(farmer.registration_date), 'MMM d, yyyy')}
-                                            </TableCell>
-                                            <TableCell>
-                                                {format(new Date(farmer.membership_renewal_date), 'MMM d, yyyy')}
-                                            </TableCell>
+                                            <TableCell>{farmer.phone_number}</TableCell>
                                             <TableCell>
                                                 <div className="flex gap-2">
                                                     <Link href={route('farmers.show', farmer.id)}>

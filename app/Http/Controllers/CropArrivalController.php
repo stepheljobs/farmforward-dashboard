@@ -8,6 +8,7 @@ use App\Models\CropType;
 use App\Models\Farm;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 
 class CropArrivalController extends Controller
 {
@@ -47,7 +48,7 @@ class CropArrivalController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'stub_no' => 'required|string|max:255',
+            'stub_no' => 'required|string|unique:crop_arrivals',
             'received_date' => 'required|date',
             'farmer_id' => 'required|exists:farmers,id',
             'field_id' => 'required|exists:farms,id',
@@ -55,14 +56,13 @@ class CropArrivalController extends Controller
             'quantity_good' => 'required|numeric|min:0',
             'quantity_semi' => 'required|numeric|min:0',
             'quantity_reject' => 'required|numeric|min:0',
-            'receipt_id' => 'nullable|string|max:255',
-            'receipt_name' => 'nullable|string|max:255',
+            'receipt_id' => 'required|string',
+            'receipt_name' => 'required|string',
         ]);
 
         $cropArrival = CropArrival::create($validated);
 
-        return redirect()->route('crop-arrivals.show', $cropArrival)
-            ->with('success', 'Crop arrival recorded successfully.');
+        return response()->json($cropArrival, 201);
     }
 
     /**
@@ -71,10 +71,7 @@ class CropArrivalController extends Controller
     public function show(CropArrival $cropArrival)
     {
         $cropArrival->load(['farmer', 'field', 'cropType']);
-
-        return Inertia::render('crop-arrivals/Show', [
-            'cropArrival' => $cropArrival
-        ]);
+        return response()->json($cropArrival);
     }
 
     /**
@@ -100,7 +97,7 @@ class CropArrivalController extends Controller
     public function update(Request $request, CropArrival $cropArrival)
     {
         $validated = $request->validate([
-            'stub_no' => 'required|string|max:255',
+            'stub_no' => 'required|string|unique:crop_arrivals,stub_no,' . $cropArrival->id,
             'received_date' => 'required|date',
             'farmer_id' => 'required|exists:farmers,id',
             'field_id' => 'required|exists:farms,id',
@@ -108,14 +105,13 @@ class CropArrivalController extends Controller
             'quantity_good' => 'required|numeric|min:0',
             'quantity_semi' => 'required|numeric|min:0',
             'quantity_reject' => 'required|numeric|min:0',
-            'receipt_id' => 'nullable|string|max:255',
-            'receipt_name' => 'nullable|string|max:255',
+            'receipt_id' => 'required|string',
+            'receipt_name' => 'required|string',
         ]);
 
         $cropArrival->update($validated);
 
-        return redirect()->route('crop-arrivals.show', $cropArrival)
-            ->with('success', 'Crop arrival updated successfully.');
+        return response()->json($cropArrival);
     }
 
     /**
@@ -124,8 +120,6 @@ class CropArrivalController extends Controller
     public function destroy(CropArrival $cropArrival)
     {
         $cropArrival->delete();
-
-        return redirect()->route('crop-arrivals.index')
-            ->with('success', 'Crop arrival deleted successfully.');
+        return response()->json(null, 204);
     }
 } 

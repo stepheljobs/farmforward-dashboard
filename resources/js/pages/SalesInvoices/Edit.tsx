@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Plus, Trash2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface Props extends PageProps {
     salesInvoice: SalesInvoice;
@@ -29,6 +30,7 @@ interface FormData {
     invoice_number: string;
     date: string;
     buyer_id: string;
+    status: string;
     items: InvoiceItem[];
     tax: number;
     [key: string]: any; // Add index signature for Inertia.js form type constraint
@@ -39,6 +41,7 @@ export default function Edit({ salesInvoice, buyers, cropArrivals }: Props) {
         invoice_number: salesInvoice.invoice_number || '',
         date: salesInvoice.date ? salesInvoice.date.split('T')[0] : new Date().toISOString().split('T')[0],
         buyer_id: salesInvoice.buyer_id ? salesInvoice.buyer_id.toString() : '',
+        status: salesInvoice.status || 'draft',
         items: salesInvoice.items.map((item) => ({
             id: item.id,
             crop_arrival_stub: item.crop_arrival_stub || '',
@@ -244,6 +247,28 @@ export default function Edit({ salesInvoice, buyers, cropArrivals }: Props) {
                                             </div>
                                         </div>
                                     ))}
+                                </div>
+
+                                <div className="mt-6 space-y-2">
+                                    <Label htmlFor="status">Invoice Status</Label>
+                                    <Select
+                                        id="status"
+                                        name="status"
+                                        value={data.status}
+                                        onChange={(e) => setData('status', e.target.value)}
+                                        disabled={data.status === 'completed' || data.status === 'cancelled'}
+                                    >
+                                        <option value="draft">Draft</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="approved">Approved</option>
+                                        <option value="completed">Completed</option>
+                                        <option value="cancelled">Cancelled</option>
+                                    </Select>
+                                    {errors.status && (
+                                        <Alert variant="destructive">
+                                            <AlertDescription>{errors.status}</AlertDescription>
+                                        </Alert>
+                                    )}
                                 </div>
 
                                 <div className="flex justify-end space-x-4">

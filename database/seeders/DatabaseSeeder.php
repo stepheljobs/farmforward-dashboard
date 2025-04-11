@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         if (!User::where('email', 'test@example.com')->exists()) {
             User::factory()->create([
                 'name' => 'Test User',
-                'email' => 'test@example.com',
+                'email' => 'admin@example.com',
                 'password' => Hash::make('password'),
             ]);
         }
@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             CropTypeSeeder::class,
             FarmerSeeder::class,
             FarmSeeder::class,
+            CropArrivalSeeder::class,
         ]);
     }
 }

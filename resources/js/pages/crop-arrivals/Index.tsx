@@ -1,5 +1,5 @@
 import { Head } from '@inertiajs/react';
-import { PageProps } from '@/types';
+import { BreadcrumbItem, PageProps } from '@/types';
 import { CropArrival } from '@/types/crop-arrival';
 import { router } from '@inertiajs/core';
 import { Button } from '@/components/ui/button';
@@ -25,9 +25,15 @@ interface Props extends PageProps {
     };
 }
 
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Crop Arrivals',
+        href: '/crop-arrivals',
+    },
+];
 export default function Index({ cropArrivals }: Props) {
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Crop Arrivals" />
 
             <div className="py-12">
