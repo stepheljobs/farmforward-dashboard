@@ -48,7 +48,7 @@ export default function Index({ cropPlanners }: Props) {
                                         <TableHead>Crop Type</TableHead>
                                         <TableHead>Area (ha)</TableHead>
                                         <TableHead>Planting Date</TableHead>
-                                        <TableHead>Status</TableHead>
+                                        <TableHead>Harvest Date</TableHead>
                                         <TableHead>Actions</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -62,6 +62,9 @@ export default function Index({ cropPlanners }: Props) {
                                             <TableCell>{planner.planned_area_hectares}</TableCell>
                                             <TableCell>
                                                 {format(new Date(planner.planned_planting_date), 'PPP')}
+                                            </TableCell>
+                                            <TableCell>
+                                                {format(new Date(planner.expected_harvest_date), 'PPP')}
                                             </TableCell>
                                             <TableCell>
                                                 <span className={`px-2 py-1 rounded-full text-xs ${

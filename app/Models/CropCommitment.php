@@ -13,16 +13,14 @@ class CropCommitment extends Model
     protected $fillable = [
         'farmer_id',
         'crop_type_id',
-        'quantity',
-        'status',
-        'commitment_date',
-        'fulfillment_date'
+        'estimated_quantity',
+        'expected_harvest_date',
+        'status'
     ];
 
     protected $casts = [
-        'commitment_date' => 'date',
-        'fulfillment_date' => 'date',
-        'quantity' => 'float'
+        'expected_harvest_date' => 'date',
+        'estimated_quantity' => 'float'
     ];
 
     public function farmer()

@@ -7,6 +7,7 @@ use App\Http\Controllers\CropPlannerController;
 use App\Http\Controllers\CropArrivalController;
 use App\Http\Controllers\SalesInvoiceController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\CropForecastController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -33,6 +34,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('sales-invoices.update-status');
 
     Route::resource('sales', SalesController::class);
+
+    // Crop Forecast route
+    Route::get('/crop-forecast', [CropForecastController::class, 'index'])->name('crop-forecast.index');
 });
 
 require __DIR__.'/settings.php';
