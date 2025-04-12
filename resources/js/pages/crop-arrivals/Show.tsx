@@ -7,9 +7,8 @@ import { router } from '@inertiajs/core';
 import AppLayout from '@/layouts/app-layout';
 import CropArrivalReceipt from '@/components/receipts/CropArrivalReceipt';
 import { useRef } from 'react';
-import { ArrowLeftIcon } from 'lucide-react';
-import { PencilIcon } from 'lucide-react';
-import { PrinterIcon } from 'lucide-react';
+import { ArrowLeftIcon, PrinterIcon, PencilIcon } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 interface Props extends PageProps {
     cropArrival: CropArrival;
@@ -47,106 +46,116 @@ export default function Show({ cropArrival }: Props) {
             <Head title={`Crop Arrival - ${cropArrival.stub_no}`} />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6">
-                            <div className="flex justify-between items-center mb-6">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                    {/* Header with navigation and actions */}
+                    <div className="flex justify-between items-center">
+                        <Button
+                            variant="outline"
+                            onClick={() => router.visit(route('crop-arrivals.index'))}
+                        >
+                            <ArrowLeftIcon className="w-4 h-4 mr-2" />
+                            Back
+                        </Button>
+                        <div className="flex gap-2">
                             <Button
-                                        variant="outline"
-                                        onClick={() => router.visit(route('crop-arrivals.index'))}
-                                    >
-                                        <ArrowLeftIcon className="w-4 h-4 mr-2" />
-                                    </Button>
-                                <h2 className="text-2xl font-semibold">Crop Arrival Details</h2>
-                                <div className="flex gap-2">
-                                    <Button
-                                        variant="outline"
-                                        onClick={handlePrint}
-                                    >
-                                        <PrinterIcon className="w-4 h-4 mr-2" />
-                                        Print
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        onClick={() => router.visit(route('crop-arrivals.edit', cropArrival.id))}
-                                    >
-                                        <PencilIcon className="w-4 h-4 mr-2" />
-                                        Edit
-                                    </Button>
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <h3 className="text-lg font-medium mb-4">Basic Information</h3>
-                                    <dl className="space-y-4">
-                                        <div>
-                                            <dt className="text-sm font-medium text-gray-500">Stub Number</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">{cropArrival.stub_no}</dd>
-                                        </div>
-                                        <div>
-                                            <dt className="text-sm font-medium text-gray-500">Received Date</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">
-                                                {format(new Date(cropArrival.received_date), 'MMMM d, yyyy')}
-                                            </dd>
-                                        </div>
-                                        <div>
-                                            <dt className="text-sm font-medium text-gray-500">Farmer</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">
-                                                {cropArrival.farmer.first_name} {cropArrival.farmer.last_name}
-                                            </dd>
-                                        </div>
-                                        <div>
-                                            <dt className="text-sm font-medium text-gray-500">Field</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">{cropArrival.field.name}</dd>
-                                        </div>
-                                        <div>
-                                            <dt className="text-sm font-medium text-gray-500">Crop Type</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">{cropArrival.crop_type.name}</dd>
-                                        </div>
-                                    </dl>
-                                </div>
-
-                                <div>
-                                    <h3 className="text-lg font-medium mb-4">Quantity Details</h3>
-                                    <dl className="space-y-4">
-                                        <div>
-                                            <dt className="text-sm font-medium text-gray-500">Good Quantity</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">{cropArrival.quantity_good}</dd>
-                                        </div>
-                                        <div>
-                                            <dt className="text-sm font-medium text-gray-500">Semi Quantity</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">{cropArrival.quantity_semi}</dd>
-                                        </div>
-                                        <div>
-                                            <dt className="text-sm font-medium text-gray-500">Reject Quantity</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">{cropArrival.quantity_reject}</dd>
-                                        </div>
-                                        <div>
-                                            <dt className="text-sm font-medium text-gray-500">Total Quantity</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">
-                                                {cropArrival.quantity_good + cropArrival.quantity_semi + cropArrival.quantity_reject}
-                                            </dd>
-                                        </div>
-                                    </dl>
-                                </div>
-
-                                <div>
-                                    <h3 className="text-lg font-medium mb-4">Receipt Information</h3>
-                                    <dl className="space-y-4">
-                                        <div>
-                                            <dt className="text-sm font-medium text-gray-500">Receipt ID</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">{cropArrival.receipt_id || '-'}</dd>
-                                        </div>
-                                        <div>
-                                            <dt className="text-sm font-medium text-gray-500">Receipt Name</dt>
-                                            <dd className="mt-1 text-sm text-gray-900">{cropArrival.receipt_name || '-'}</dd>
-                                        </div>
-                                    </dl>
-                                </div>
-                            </div>
+                                variant="outline"
+                                onClick={handlePrint}
+                            >
+                                <PrinterIcon className="w-4 h-4 mr-2" />
+                                Print
+                            </Button>
+                            <Button
+                                variant="outline"
+                                onClick={() => router.visit(route('crop-arrivals.edit', cropArrival.id))}
+                            >
+                                <PencilIcon className="w-4 h-4 mr-2" />
+                                Edit
+                            </Button>
                         </div>
                     </div>
+
+                    {/* Receipt Information Card */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Receipt Information</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <div className="text-sm font-medium text-gray-500">Receipt ID</div>
+                                    <div className="mt-1 text-lg">{cropArrival.receipt_id || '-'}</div>
+                                </div>
+                                <div>
+                                    <div className="text-sm font-medium text-gray-500">Receipt Name</div>
+                                    <div className="mt-1 text-lg">{cropArrival.receipt_name || '-'}</div>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Basic Information Card */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Basic Information</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <div className="text-sm font-medium text-gray-500">Stub Number</div>
+                                    <div className="mt-1 text-lg">{cropArrival.stub_no}</div>
+                                </div>
+                                <div>
+                                    <div className="text-sm font-medium text-gray-500">Received Date</div>
+                                    <div className="mt-1 text-lg">
+                                        {format(new Date(cropArrival.received_date), 'MMMM d, yyyy')}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="text-sm font-medium text-gray-500">Farmer</div>
+                                    <div className="mt-1 text-lg">
+                                        {cropArrival.farmer.first_name} {cropArrival.farmer.last_name}
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="text-sm font-medium text-gray-500">Field</div>
+                                    <div className="mt-1 text-lg">{cropArrival.field.name}</div>
+                                </div>
+                                <div>
+                                    <div className="text-sm font-medium text-gray-500">Crop Type</div>
+                                    <div className="mt-1 text-lg">{cropArrival.crop_type.name}</div>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
+
+                    {/* Quantity Details Card */}
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Quantity Details</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <div className="text-sm font-medium text-gray-500">Good Quantity</div>
+                                    <div className="mt-1 text-lg">{cropArrival.quantity_good}</div>
+                                </div>
+                                <div>
+                                    <div className="text-sm font-medium text-gray-500">Semi Quantity</div>
+                                    <div className="mt-1 text-lg">{cropArrival.quantity_semi}</div>
+                                </div>
+                                <div>
+                                    <div className="text-sm font-medium text-gray-500">Reject Quantity</div>
+                                    <div className="mt-1 text-lg">{cropArrival.quantity_reject}</div>
+                                </div>
+                                <div>
+                                    <div className="text-sm font-medium text-gray-500">Total Quantity</div>
+                                    <div className="mt-1 text-lg">
+                                        {cropArrival.quantity_good + cropArrival.quantity_semi + cropArrival.quantity_reject}
+                                    </div>
+                                </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
             </div>
 

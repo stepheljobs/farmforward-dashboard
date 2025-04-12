@@ -3,6 +3,8 @@ import { BreadcrumbItem, PageProps } from '@/types';
 import AppLayout from '@/layouts/app-layout';
 import { Button, Card, CardContent, CardHeader, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
 import { Link } from '@inertiajs/react';
+import { EyeIcon } from 'lucide-react';
+import { PencilIcon } from 'lucide-react';
 
 interface Farmer {
     id: number;
@@ -78,13 +80,13 @@ export default function Index({ auth, farmers }: Props) {
                                             <TableCell>
                                                 <div className="flex gap-2">
                                                     <Link href={route('farmers.show', farmer.id)}>
-                                                        <Button variant="outline" size="sm">
-                                                            View
+                                                        <Button variant="outline" size="icon">
+                                                            <EyeIcon className="h-4 w-4" />
                                                         </Button>
                                                     </Link>
                                                     <Link href={route('farmers.edit', farmer.id)}>
-                                                        <Button variant="outline" size="sm">
-                                                            Edit
+                                                        <Button variant="outline" size="icon">
+                                                            <PencilIcon className="h-4 w-4" />
                                                         </Button>
                                                     </Link>
                                                 </div>

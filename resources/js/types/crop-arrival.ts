@@ -21,7 +21,7 @@ export interface CropArrival {
         id: number;
         name: string;
     };
-    cropType: {
+    crop_type: {
         id: number;
         name: string;
     };
