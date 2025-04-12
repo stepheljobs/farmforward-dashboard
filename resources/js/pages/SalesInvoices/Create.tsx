@@ -5,9 +5,24 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Check, ChevronsUpDown } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import AppLayout from '@/layouts/app-layout';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { cn } from '@/lib/utils';
 
 interface Props extends PageProps {
     cropArrivals: Array<{ stub_no: string; crop_type: string }>;
@@ -136,37 +151,59 @@ export default function Create({ cropArrivals }: Props) {
                                         <div key={index} className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 border rounded-lg">
                                             <div className="space-y-2">
                                                 <Label>Stub No.</Label>
-                                                <Select
-                                                    value={item.crop_arrival_stub}
-                                                    onValueChange={(value) => {
-                                                        const selectedCrop = cropArrivals.find(
-                                                            (crop) => crop.stub_no === value
-                                                        );
-                                                        
-                                                        // Update both fields at once
-                                                        const newItems = [...data.items];
-                                                        newItems[index] = {
-                                                            ...newItems[index],
-                                                            crop_arrival_stub: value,
-                                                            crop_type: selectedCrop?.crop_type || ''
-                                                        };
-                                                        setData('items', newItems);
-                                                    }}
-                                                >
-                                                    <SelectTrigger className={errors[`items.${index}.crop_arrival_stub`] ? 'border-red-500' : ''}>
-                                                        <SelectValue placeholder="Select crop arrival" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {cropArrivals.map((crop) => (
-                                                            <SelectItem key={crop.stub_no} value={crop.stub_no}>
-                                                                {crop.stub_no}
-                                                            </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
-                                                {getItemError(index, 'crop_arrival_stub') && (
+                                                <Popover>
+                                                    <PopoverTrigger asChild>
+                                                        <Button
+                                                            variant="outline"
+                                                            role="combobox"
+                                                            className="w-full justify-between"
+                                                        >
+                                                            {item.crop_arrival_stub
+                                                                ? cropArrivals.find((crop) => crop.stub_no === item.crop_arrival_stub)?.stub_no
+                                                                : "Select crop arrival..."}
+                                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                        </Button>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent className="w-full p-0">
+                                                        <Command>
+                                                            <CommandInput placeholder="Search crop arrival..." />
+                                                            <CommandList>
+                                                                <CommandEmpty>No crop arrivals found.</CommandEmpty>
+                                                                <CommandGroup>
+                                                                    {cropArrivals.map((crop) => (
+                                                                        <CommandItem
+                                                                            key={crop.stub_no}
+                                                                            value={crop.stub_no}
+                                                                            onSelect={(currentValue) => {
+                                                                                const selectedCrop = cropArrivals.find(
+                                                                                    (crop) => crop.stub_no === currentValue
+                                                                                );
+                                                                                const newItems = [...data.items];
+                                                                                newItems[index] = {
+                                                                                    ...newItems[index],
+                                                                                    crop_arrival_stub: currentValue,
+                                                                                    crop_type: selectedCrop?.crop_type || ''
+                                                                                };
+                                                                                setData('items', newItems);
+                                                                            }}
+                                                                        >
+                                                                            <Check
+                                                                                className={cn(
+                                                                                    "mr-2 h-4 w-4",
+                                                                                    item.crop_arrival_stub === crop.stub_no ? "opacity-100" : "opacity-0"
+                                                                                )}
+                                                                            />
+                                                                            {crop.stub_no}
+                                                                        </CommandItem>
+                                                                    ))}
+                                                                </CommandGroup>
+                                                            </CommandList>
+                                                        </Command>
+                                                    </PopoverContent>
+                                                </Popover>
+                                                {errors[`items.${index}.crop_arrival_stub`] && (
                                                     <p className="text-sm text-red-600">
-                                                        {getItemError(index, 'crop_arrival_stub')}
+                                                        {errors[`items.${index}.crop_arrival_stub`]}
                                                     </p>
                                                 )}
                                             </div>
