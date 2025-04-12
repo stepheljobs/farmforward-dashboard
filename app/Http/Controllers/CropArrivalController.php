@@ -71,7 +71,9 @@ class CropArrivalController extends Controller
     public function show(CropArrival $cropArrival)
     {
         $cropArrival->load(['farmer', 'field', 'cropType']);
-        return response()->json($cropArrival);
+        return Inertia::render('crop-arrivals/Show', [
+            'cropArrival' => $cropArrival
+        ]);
     }
 
     /**

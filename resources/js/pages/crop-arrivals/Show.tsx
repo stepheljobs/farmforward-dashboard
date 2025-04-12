@@ -51,6 +51,12 @@ export default function Show({ cropArrival }: Props) {
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6">
                             <div className="flex justify-between items-center mb-6">
+                            <Button
+                                        variant="outline"
+                                        onClick={() => router.visit(route('crop-arrivals.index'))}
+                                    >
+                                        <ArrowLeftIcon className="w-4 h-4 mr-2" />
+                                    </Button>
                                 <h2 className="text-2xl font-semibold">Crop Arrival Details</h2>
                                 <div className="flex gap-2">
                                     <Button
@@ -58,7 +64,7 @@ export default function Show({ cropArrival }: Props) {
                                         onClick={handlePrint}
                                     >
                                         <PrinterIcon className="w-4 h-4 mr-2" />
-                                        Print Receipt
+                                        Print
                                     </Button>
                                     <Button
                                         variant="outline"
@@ -66,13 +72,6 @@ export default function Show({ cropArrival }: Props) {
                                     >
                                         <PencilIcon className="w-4 h-4 mr-2" />
                                         Edit
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        onClick={() => router.visit(route('crop-arrivals.index'))}
-                                    >
-                                        <ArrowLeftIcon className="w-4 h-4 mr-2" />
-                                        Back to List
                                     </Button>
                                 </div>
                             </div>
