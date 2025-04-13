@@ -16,7 +16,7 @@ class CropCommitmentFactory extends Factory
         return [
             'farmer_id' => Farmer::inRandomOrder()->first()->id,
             'crop_type_id' => CropType::inRandomOrder()->first()->id,
-            'estimated_quantity' => $this->faker->randomFloat(2, 100, 1000),
+            'estimated_quantity' => $this->faker->numberBetween(100, 1000),
             'expected_harvest_date' => $this->faker->dateTimeBetween('now', '+2 months'),
             'status' => $this->faker->randomElement(['pending', 'in_progress', 'fulfilled', 'failed']),
         ];

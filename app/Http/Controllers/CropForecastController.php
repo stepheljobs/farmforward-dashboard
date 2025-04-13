@@ -20,18 +20,52 @@ class CropForecastController extends Controller
             ->with(['cropType:id,name', 'farmer:id,first_name,last_name'])
             ->get();
 
-        Log::info($cropCommitments);
+        $cropCommitments = $cropCommitments
+            ->groupBy('crop_type_id')
+            ->map(function ($commitments) {
+                $first = $commitments->first();
+                return [
+                    'id' => $first->id,
+                    'farmers' => $commitments->map(function ($commitment) {
+                        return [
+                            'id' => $commitment->farmer_id,
+                            'name' => $commitment->farmer->first_name . ' ' . $commitment->farmer->last_name
+                        ];
+                    })->values(),
+                    'crop_type_id' => $first->crop_type_id,
+                    'estimated_quantity' => $commitments->sum('estimated_quantity'),
+                    'crop_type' => $first->cropType->name,
+                    'expected_harvest_month' => $first->expected_harvest_date->format('F')
+                ];
+            })->values();
 
-        $cropArrivals = CropArrival::whereMonth('month', now()->month)
-            ->orWhereMonth('month', now()->addMonth()->month)
+        $cropArrivals = CropArrival::whereMonth('received_date', now()->month)
+            ->with(['cropType:id,name'])
+            ->select('id', 'received_date', 'crop_type_id', 'quantity_good', 'quantity_semi', 'quantity_reject', 'created_at')
             ->get()
-            ->groupBy('month');
+            ->groupBy('crop_type_id')
+            ->map(function ($arrivals) {
+                $first = $arrivals->first();
+                return [
+                    'id' => $first->id,
+                    'crop_type_id' => $first->crop_type_id,
+                    'expected_harvest_month' => $first->received_date->format('F'),
+                    'crop_type' => $first->cropType->name,
+                    'arrivals_quantity' => $arrivals->sum(function($arrival) {
+                        return $arrival->quantity_good + $arrival->quantity_semi + $arrival->quantity_reject;
+                    })
+                ];
+            })->values();
 
-        // Log::info($cropArrivals);
+        $aggregatedCropCommitments = $cropCommitments->map(function ($commitment) use ($cropArrivals) {
+            $commitment['arrivals_quantity'] = $cropArrivals->where('crop_type_id', $commitment['crop_type_id'])->first()['arrivals_quantity'] ?? 0;
+            return $commitment;
+        });
         
         return Inertia::render('crop-forecast/Index', [
             'cropCommitments' => $cropCommitments,
             'cropArrivals' => $cropArrivals,
+            'aggregatedCropCommitments' => $aggregatedCropCommitments
         ]);
     }
 } 
