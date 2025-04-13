@@ -114,15 +114,15 @@ export default function Show({ salesInvoice }: Props) {
                                     <div className="space-y-2">
                                         <div>
                                             <span className="font-medium">Subtotal:</span>{' '}
-                                            ${Number(salesInvoice.subtotal).toFixed(2)}
+                                            ₱{Number(salesInvoice.subtotal).toFixed(2)}
                                         </div>
                                         <div>
                                             <span className="font-medium">Tax:</span>{' '}
-                                            ${Number(salesInvoice.tax).toFixed(2)}
+                                            ₱{Number(salesInvoice.tax).toFixed(2)}
                                         </div>
                                         <div>
                                             <span className="font-medium">Total Amount:</span>{' '}
-                                            ${Number(salesInvoice.total_amount).toFixed(2)}
+                                            ₱{Number(salesInvoice.total_amount).toFixed(2)}
                                         </div>
                                     </div>
                                 </div>
@@ -147,8 +147,8 @@ export default function Show({ salesInvoice }: Props) {
                                                 <TableCell>{item.crop_arrival_stub}</TableCell>
                                                 <TableCell>{item.crop_type}</TableCell>
                                                 <TableCell>{item.quantity}</TableCell>
-                                                <TableCell>${Number(item.unit_price).toFixed(2)}</TableCell>
-                                                <TableCell>${Number(item.total_price).toFixed(2)}</TableCell>
+                                                <TableCell>₱{Number(item.unit_price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                                                <TableCell>₱{Number(item.total_price).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
                                                 <TableCell>{item.notes}</TableCell>
                                             </TableRow>
                                         ))}

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('invoice_number', 20)->unique();
             $table->timestamp('date');
-            $table->uuid('buyer_id')->nullable();
             $table->decimal('subtotal', 10, 2);
             $table->decimal('tax', 10, 2)->nullable();
             $table->decimal('total_amount', 10, 2);

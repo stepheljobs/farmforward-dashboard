@@ -26,7 +26,6 @@ import { cn } from '@/lib/utils';
 
 interface Props extends PageProps {
     salesInvoice: SalesInvoice;
-    buyers: Array<{ id: number; name: string }>;
     cropArrivals: Array<{ stub_no: string; crop_type: string }>;
 }
 
@@ -42,7 +41,6 @@ interface InvoiceItem {
 interface FormData {
     invoice_number: string;
     date: string;
-    buyer_id: string;
     status: string;
     items: InvoiceItem[];
     tax: number;
@@ -56,11 +54,10 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Edit({ salesInvoice, buyers, cropArrivals }: Props) {
+export default function Edit({ salesInvoice, cropArrivals }: Props) {
     const { data, setData, put, processing, errors } = useForm<FormData>({
         invoice_number: salesInvoice.invoice_number || '',
         date: salesInvoice.date ? salesInvoice.date.split('T')[0] : new Date().toISOString().split('T')[0],
-        buyer_id: salesInvoice.buyer_id ? salesInvoice.buyer_id.toString() : '',
         status: salesInvoice.status || 'draft',
         items: salesInvoice.items.map((item) => ({
             id: item.id,

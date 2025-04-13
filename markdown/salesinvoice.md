@@ -138,7 +138,6 @@ CREATE TABLE sales_invoices (
     id UUID PRIMARY KEY,
     invoice_number VARCHAR(20) UNIQUE,
     date TIMESTAMP,
-    buyer_id UUID,
     subtotal DECIMAL(10,2),
     tax DECIMAL(10,2),
     total_amount DECIMAL(10,2),

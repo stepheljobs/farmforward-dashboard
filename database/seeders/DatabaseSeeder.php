@@ -28,8 +28,8 @@ class DatabaseSeeder extends Seeder
             FarmSeeder::class,
             CropArrivalSeeder::class,
             SalesInvoiceSeeder::class,
-            BuyerSeeder::class,
             CropCommitmentSeeder::class,
+            SaleSeeder::class,
         ]);
     }
 }

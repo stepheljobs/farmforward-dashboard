@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('sales_receipts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('crop_delivery_id')->constrained()->onDelete('cascade');
-            $table->foreignId('buyer_id')->constrained()->onDelete('cascade');
             $table->decimal('amount', 10, 2);
             $table->date('sale_date');
             $table->timestamps();

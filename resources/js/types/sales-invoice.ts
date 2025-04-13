@@ -10,18 +10,10 @@ export interface SalesInvoiceItem {
     updated_at: string;
 }
 
-export interface Buyer {
-    id: number;
-    name: string;
-    // Add other buyer fields as needed
-}
-
 export interface SalesInvoice {
     id: number;
     invoice_number: string;
     date: string;
-    buyer_id: number;
-    buyer: Buyer;
     subtotal: number;
     tax: number;
     total_amount: number;

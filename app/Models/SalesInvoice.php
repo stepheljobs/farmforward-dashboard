@@ -14,7 +14,6 @@ class SalesInvoice extends Model
     protected $fillable = [
         'invoice_number',
         'date',
-        'buyer_id',
         'subtotal',
         'total_amount',
         'status',
@@ -26,11 +25,6 @@ class SalesInvoice extends Model
         'subtotal' => 'decimal:2',
         'total_amount' => 'decimal:2',
     ];
-
-    public function buyer()
-    {
-        return $this->belongsTo(Buyer::class);
-    }
 
     public function items(): HasMany
     {

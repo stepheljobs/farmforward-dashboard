@@ -17,7 +17,6 @@ class SalesReceipt extends Model
      */
     protected $fillable = [
         'crop_delivery_id',
-        'buyer_id',
         'amount',
         'sale_date',
     ];
@@ -53,13 +52,5 @@ class SalesReceipt extends Model
             'crop_delivery_id', // Local key on sales_receipts table
             'farmer_id' // Local key on crop_deliveries table
         );
-    }
-
-    /**
-     * Get the buyer that purchased the crops.
-     */
-    public function buyer()
-    {
-        return $this->belongsTo(Buyer::class);
     }
 } 

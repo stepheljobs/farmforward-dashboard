@@ -27,6 +27,7 @@ interface Props extends PageProps {
 }
 
 export default function Index({ salesInvoices }: Props) {
+    console.log(salesInvoices);
     return (
         <AppLayout>
             <Head title="Sales Invoices" />

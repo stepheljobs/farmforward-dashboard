@@ -1,19 +1,19 @@
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
 import AppLayout from '@/layouts/app-layout';
 import { Link } from '@inertiajs/react';
 import { Pagination } from "@/components/ui/pagination"
+import { Eye, Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface Sale {
     id: string;
     sales_number: string;
     sales_invoice: {
         invoice_number: string;
-        buyer: {
-            name: string;
-        };
     };
     final_amount: number;
     finalized_at: string;
+    created_at: string;
 }
 
 interface Props {
@@ -24,7 +24,7 @@ interface Props {
     };
 }
 
-export default function Index({ auth, sales }: Props) {
+export default function Index({ sales }: Props) {
     return (
         <AppLayout>
             <Head title="Sales" />
@@ -37,9 +37,10 @@ export default function Index({ auth, sales }: Props) {
                                 <h3 className="text-lg font-semibold">Sales Records</h3>
                                 <Link
                                     href={route('sales.create')}
-                                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                                    className="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-900"
                                 >
-                                    Create New Sale
+                                    <Plus className="w-4 h-4 mr-2 inline-block" />
+                                    New Sale
                                 </Link>
                             </div>
 
@@ -52,9 +53,6 @@ export default function Index({ auth, sales }: Props) {
                                             </th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 Invoice Number
-                                            </th>
-                                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                Buyer
                                             </th>
                                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                 Amount
@@ -77,21 +75,19 @@ export default function Index({ auth, sales }: Props) {
                                                     {sale.sales_invoice.invoice_number}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {sale.sales_invoice.buyer.name}
+                                                    ₱{Number(sale.final_amount).toFixed(2)}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    ${sale.final_amount.toFixed(2)}
+                                                    {new Date(sale.created_at).toLocaleString()}
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    {new Date(sale.finalized_at).toLocaleString()}
-                                                </td>
-                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                    <Link
-                                                        href={route('sales.show', sale.id)}
-                                                        className="text-blue-600 hover:text-blue-900"
+                                                    <Button
+                                                        variant="outline"
+                                                        size="icon"
+                                                        onClick={() => router.visit(route('sales.show', sale.id))}
                                                     >
-                                                        View Details
-                                                    </Link>
+                                                        <Eye className="h-4 w-4" />
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}

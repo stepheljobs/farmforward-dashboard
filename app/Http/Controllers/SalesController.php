@@ -16,8 +16,10 @@ class SalesController extends Controller
      */
     public function index()
     {
-        $sales = Sale::with(['salesInvoice.buyer'])
-            ->latest()
+        $sales = Sale::latest()
+            ->with(['salesInvoice' => function($query) {
+                $query->select('id', 'invoice_number');
+            }])
             ->paginate(10);
 
         return Inertia::render('Sales/Index', [
@@ -32,7 +34,7 @@ class SalesController extends Controller
     {
         $pendingInvoices = SalesInvoice::where('status', 'approved')
             ->whereDoesntHave('sale')
-            ->with(['buyer', 'items'])
+            ->with(['items'])
             ->latest()
             ->paginate(10);
 
@@ -56,7 +58,6 @@ class SalesController extends Controller
         $sale = Sale::create([
             'sales_number' => 'SL-' . date('Ymd') . '-' . Str::random(4),
             'sales_invoice_id' => $invoice->id,
-            'finalized_at' => now(),
             'finalized_by' => Auth::id(),
             'final_amount' => $invoice->total_amount,
             'status' => 'completed',
@@ -72,7 +73,7 @@ class SalesController extends Controller
      */
     public function show(Sale $sale)
     {
-        $sale->load(['salesInvoice.buyer', 'salesInvoice.items']);
+        $sale->load(['salesInvoice.items']);
 
         return Inertia::render('Sales/Show', [
             'sale' => $sale
