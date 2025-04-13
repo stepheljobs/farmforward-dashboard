@@ -3,7 +3,7 @@ import { BreadcrumbItem, PageProps } from '@/types';
 import AppLayout from '@/layouts/app-layout';
 import { Button, Card, CardContent, CardHeader, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui';
 import { Link } from '@inertiajs/react';
-import { EyeIcon } from 'lucide-react';
+import { EyeIcon, Plus } from 'lucide-react';
 import { PencilIcon } from 'lucide-react';
 
 interface Farmer {
@@ -36,14 +36,17 @@ export default function Index({ auth, farmers }: Props) {
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Farmers" />
-            
+
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between">
                             <h2 className="text-2xl font-semibold">Farmers List</h2>
                             <Link href={route('farmers.create')}>
-                                <Button>Register New Farmer</Button>
+                                <Button>
+                                    <Plus className="w-4 h-4 mr-2" />
+                                    New Farmer
+                                </Button>
                             </Link>
                         </CardHeader>
                         <CardContent>
@@ -103,11 +106,10 @@ export default function Index({ auth, farmers }: Props) {
                                         <Link
                                             key={page}
                                             href={route('farmers.index', { page })}
-                                            className={`px-3 py-1 rounded ${
-                                                page === farmers.current_page
+                                            className={`px-3 py-1 rounded ${page === farmers.current_page
                                                     ? 'bg-primary text-white'
                                                     : 'bg-gray-200 hover:bg-gray-300'
-                                            }`}
+                                                }`}
                                         >
                                             {page}
                                         </Link>

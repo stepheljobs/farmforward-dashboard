@@ -37,8 +37,8 @@ const operationsNavItems: NavItem[] = [
 
 const consultantsNavItems: NavItem[] = [
     {
-        title: 'Crop Planner',
-        href: '/crop-planners',
+        title: 'Crop Commitments',
+        href: '/crop-commitments',
         icon: Sprout,
     },
     {

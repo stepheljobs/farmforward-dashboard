@@ -2,8 +2,13 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import AppLayout from '@/layouts/app-layout';
 import { PageProps } from '@/types';
 import { Head } from '@inertiajs/react';
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
 
 interface CropForecastProps extends PageProps {
+    cropCommitments: {
+        crop_type: string;
+        estimated_quantity: number;
+    }[];
     aggregatedCropCommitments: {
         id: string;
         crop_type: string;
@@ -13,15 +18,15 @@ interface CropForecastProps extends PageProps {
         expected_harvest_month: string;
     }[];
 }
+export default function CropForecastIndex({ month, cropCommitments, aggregatedCropCommitments }: CropForecastProps) {
 
-export default function CropForecastIndex({ cropCommitments, aggregatedCropCommitments }: CropForecastProps) {
     return (
         <AppLayout>
             <Head title="Crop Forecast" />
             <div className="px-12">
 
                 <div className="container mx-auto py-6">
-                    <h1 className="text-2xl font-bold mb-6">Crop Commitments vs Arrival</h1>
+                    <h1 className="text-2xl font-bold mb-6">Crop Commitments vs Arrival - {String(month)}</h1>
                     <Table>
                         <TableHeader>
                             <TableRow>
@@ -57,6 +62,37 @@ export default function CropForecastIndex({ cropCommitments, aggregatedCropCommi
                             ))}
                         </TableBody>
                     </Table>
+                </div>
+                <div className="container mx-auto py-6">
+                    <h1 className="text-2xl font-bold mb-6">Crop Commitments in Percentage - {String(month)}</h1>
+                    <div className="w-full h-[400px]">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                                <Pie
+                                    data={cropCommitments?.map((crop: {crop_type: string, estimated_quantity: number}) => ({
+                                        name: crop.crop_type,
+                                        value: crop.estimated_quantity
+                                    }))}
+                                    dataKey="value"
+                                    nameKey="name"
+                                    cx="50%"
+                                    cy="50%"
+                                    outerRadius={150}
+                                    fill="#8884d8"
+                                    label={({name, percent}) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                >
+                                    {cropCommitments.map((entry, index) => (
+                                        <Cell 
+                                            key={`cell-${index}`} 
+                                            fill={`hsl(${index * (360 / cropCommitments.length)}, 70%, 50%)`}
+                                        />
+                                    ))}
+                                </Pie>
+                                <Tooltip />
+                                <Legend />
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </div>
                 </div>
             </div>
         </AppLayout>

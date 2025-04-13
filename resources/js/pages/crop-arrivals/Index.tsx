@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 import { format } from 'date-fns';
 import AppLayout from '@/layouts/app-layout';
-import { Pencil } from 'lucide-react';
+import { Pencil, Plus } from 'lucide-react';
 import { Eye } from 'lucide-react';
 
 interface Props extends PageProps {
@@ -45,6 +45,7 @@ export default function Index({ cropArrivals }: Props) {
                             <div className="flex justify-between items-center mb-6">
                                 <h2 className="text-2xl font-semibold">Crop Arrivals</h2>
                                 <Button onClick={() => router.visit(route('crop-arrivals.create'))}>
+                                    <Plus className="w-4 h-4 mr-2" />
                                     Add Arrival
                                 </Button>
                             </div>

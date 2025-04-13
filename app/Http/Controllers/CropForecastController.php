@@ -14,9 +14,12 @@ class CropForecastController extends Controller
     /**
      * Display the crop forecast page.
      */
-    public function index(): Response
+    public function index(?int $month = null): Response
     {
-        $cropCommitments = CropCommitment::whereMonth('expected_harvest_date', now()->month)
+
+        $month = $month ?? now()->month;
+
+        $cropCommitments = CropCommitment::whereMonth('expected_harvest_date', $month)
             ->with(['cropType:id,name', 'farmer:id,first_name,last_name'])
             ->get();
 
@@ -39,7 +42,7 @@ class CropForecastController extends Controller
                 ];
             })->values();
 
-        $cropArrivals = CropArrival::whereMonth('received_date', now()->month)
+        $cropArrivals = CropArrival::whereMonth('received_date', $month)
             ->with(['cropType:id,name'])
             ->select('id', 'received_date', 'crop_type_id', 'quantity_good', 'quantity_semi', 'quantity_reject', 'created_at')
             ->get()
@@ -63,6 +66,7 @@ class CropForecastController extends Controller
         });
         
         return Inertia::render('crop-forecast/Index', [
+            'month' => now()->setMonth($month)->format('F'),
             'cropCommitments' => $cropCommitments,
             'cropArrivals' => $cropArrivals,
             'aggregatedCropCommitments' => $aggregatedCropCommitments

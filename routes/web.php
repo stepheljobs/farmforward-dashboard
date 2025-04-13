@@ -3,8 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\FarmerController;
-use App\Http\Controllers\CropPlannerController;
 use App\Http\Controllers\CropArrivalController;
+use App\Http\Controllers\CropCommitmentController;
 use App\Http\Controllers\SalesInvoiceController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\CropForecastController;
@@ -21,9 +21,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Farmers routes
     Route::resource('farmers', FarmerController::class);
 
-    // Crop-planners routes
-    Route::resource('crop-planners', CropPlannerController::class);
-    Route::put('crop-planners/{cropPlanner}/status', [CropPlannerController::class, 'updateStatus'])->name('crop-planners.update-status');
+    // Crop-commitments routes
+    Route::resource('crop-commitments', CropCommitmentController::class);
+    Route::put('crop-commitments/{cropPlanner}/status', [CropCommitmentController::class, 'updateStatus'])->name('crop-commitments.update-status');
 
     // Crop-arrivals routes
     Route::resource('crop-arrivals', CropArrivalController::class);
@@ -36,7 +36,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('sales', SalesController::class);
 
     // Crop Forecast route
-    Route::get('/crop-forecast', [CropForecastController::class, 'index'])->name('crop-forecast.index');
+    Route::get('/crop-forecast/{month?}', [CropForecastController::class, 'index'])
+        ->where('month', '[1-9]|1[0-2]')
+        ->name('crop-forecast.index');
 });
 
 require __DIR__.'/settings.php';
