@@ -56,7 +56,7 @@ const consultantsNavItems: NavItem[] = [
 const financeNavItems: NavItem[] = [
     {
         title: 'Financial Overview',
-        href: '/financial-overview',
+        href: '/sales-overview',
         icon: DollarSign,
     },
     {

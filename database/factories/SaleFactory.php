@@ -30,6 +30,7 @@ class SaleFactory extends Factory
             },
             'status' => 'completed',
             'notes' => $this->faker->optional()->sentence(),
+            'created_at' => $this->faker->dateTimeBetween('-28 days', 'now'),
         ];
     }
 }

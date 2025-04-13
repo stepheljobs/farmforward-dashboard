@@ -8,6 +8,7 @@ use App\Http\Controllers\CropCommitmentController;
 use App\Http\Controllers\SalesInvoiceController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\CropForecastController;
+use App\Http\Controllers\SalesOverviewController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -17,6 +18,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('dashboard');
     })->name('dashboard');
+
+    // Sales Overview route
+    Route::get('/sales-overview', [SalesOverviewController::class, 'index'])->name('sales-overview');
 
     // Farmers routes
     Route::resource('farmers', FarmerController::class);
