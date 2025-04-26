@@ -9,6 +9,8 @@ use App\Http\Controllers\SalesInvoiceController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\CropForecastController;
 use App\Http\Controllers\SalesOverviewController;
+use App\Http\Controllers\WithdrawalRequestController;
+use App\Http\Controllers\EmployeeController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -43,6 +45,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/crop-forecast/{month?}', [CropForecastController::class, 'index'])
         ->where('month', '[1-9]|1[0-2]')
         ->name('crop-forecast.index');
+
+    // Withdrawal Requests routes
+    Route::resource('withdrawal-requests', WithdrawalRequestController::class);
+    
+    // Employees routes
+    Route::resource('employees', EmployeeController::class);
 });
 
 require __DIR__.'/settings.php';

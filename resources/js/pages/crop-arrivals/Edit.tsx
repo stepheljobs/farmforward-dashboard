@@ -15,6 +15,10 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import AppLayout from '@/layouts/app-layout';
+import { cn } from '@/lib/utils';
+import { Popover, PopoverTrigger, PopoverContent } from '@radix-ui/react-popover';
+import { CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from 'cmdk';
+import { ChevronsUpDown, Command, Check } from 'lucide-react';
 
 
 interface Props extends PageProps {
@@ -60,6 +64,7 @@ export default function Edit({ cropArrival, farmers, cropTypes, fields }: Props)
                                         <Input
                                             id="stub_no"
                                             value={data.stub_no}
+                                            readOnly
                                             onChange={e => setData('stub_no', e.target.value)}
                                             error={errors.stub_no}
                                         />

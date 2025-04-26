@@ -29,7 +29,7 @@ interface Props extends PageProps {
 export default function Index({ salesInvoices }: Props) {
     console.log(salesInvoices);
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={[{ title: 'Sales Invoices', href: route('sales-invoices.index') }]}>
             <Head title="Sales Invoices" />
 
             <div className="py-12">

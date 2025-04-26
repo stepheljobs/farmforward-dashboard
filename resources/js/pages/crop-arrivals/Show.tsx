@@ -74,25 +74,6 @@ export default function Show({ cropArrival }: Props) {
                         </div>
                     </div>
 
-                    {/* Receipt Information Card */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Receipt Information</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div>
-                                    <div className="text-sm font-medium text-gray-500">Receipt ID</div>
-                                    <div className="mt-1 text-lg">{cropArrival.receipt_id || '-'}</div>
-                                </div>
-                                <div>
-                                    <div className="text-sm font-medium text-gray-500">Receipt Name</div>
-                                    <div className="mt-1 text-lg">{cropArrival.receipt_name || '-'}</div>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-
                     {/* Basic Information Card */}
                     <Card>
                         <CardHeader>

@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreFarmerRequest;
 use App\Http\Requests\UpdateFarmerRequest;
 use Inertia\Inertia;
+use App\Models\CropArrival;
+use App\Models\SalesInvoice;
+use Illuminate\Support\Facades\Log;
 
 class FarmerController extends Controller
 {
@@ -72,8 +75,12 @@ class FarmerController extends Controller
         // Load related data
         $farmer->load(['farms', 'cropCommitments']);
         
+        // list of crops arrival
+        $cropsArrival = CropArrival::where('farmer_id', $farmer->id)->get();
+
         return Inertia::render('farmers/Show', [
-            'farmer' => $farmer
+            'farmer' => $farmer,
+            'cropsArrival' => $cropsArrival
         ]);
     }
 

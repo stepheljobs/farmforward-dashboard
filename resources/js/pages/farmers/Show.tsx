@@ -2,6 +2,7 @@ import { Head } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import AppLayout from '@/layouts/app-layout';
 import { Button, Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { format } from 'date-fns';
 import { Link } from '@inertiajs/react';
 
@@ -24,17 +25,29 @@ interface Farmer {
     crop_commitments: any[];
 }
 
-interface Props extends PageProps {
-    farmer: Farmer;
+interface CropArrival {
+    id: number;
+    stub_no: string;
+    received_date: string;
+    receipt_id: string;
+    receipt_name: string;
+    quantity_good: number;
+    quantity_semi: number;
+    quantity_reject: number;
 }
 
-export default function Show({ auth, farmer }: Props) {
+interface Props extends PageProps {
+    farmer: Farmer;
+    cropsArrival: CropArrival[];
+}
+
+export default function Show({ auth, farmer, cropsArrival }: Props) {
     return (
         <AppLayout>
             <Head title={`Farmer: ${farmer.first_name} ${farmer.last_name}`} />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto sm:px-6 my-8 lg:px-8">
                     <Card>
                         <CardHeader className="flex flex-row items-center justify-between">
                             <CardTitle>Farmer Details</CardTitle>
@@ -126,6 +139,43 @@ export default function Show({ auth, farmer }: Props) {
                                     </div>
                                 </div>
                             </div>
+                        </CardContent>
+                    </Card>
+                </div>
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Crops Arrivals</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Stub No</TableHead>
+                                        <TableHead>Received Date</TableHead>
+                                        <TableHead>Receipt ID</TableHead>
+                                        <TableHead>Receipt Name</TableHead>
+                                        <TableHead>Quantity Good</TableHead>
+                                        <TableHead>Quantity Semi</TableHead>
+                                        <TableHead>Quantity Reject</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {cropsArrival.map((crop) => (
+                                        <TableRow key={crop.id}>
+                                            <TableCell>{crop.stub_no}</TableCell>
+                                            <TableCell>
+                                                {format(new Date(crop.received_date), 'MMMM d, yyyy')}
+                                            </TableCell>
+                                            <TableCell>{crop.receipt_id}</TableCell>
+                                            <TableCell>{crop.receipt_name}</TableCell>
+                                            <TableCell>{crop.quantity_good}</TableCell>
+                                            <TableCell>{crop.quantity_semi}</TableCell>
+                                            <TableCell>{crop.quantity_reject}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
                         </CardContent>
                     </Card>
                 </div>

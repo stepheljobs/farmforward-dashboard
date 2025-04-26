@@ -91,7 +91,7 @@ export default function Create({ cropArrivals }: Props) {
     };
 
     return (
-        <AppLayout>
+        <AppLayout breadcrumbs={[{ title: 'Sales Invoices', href: route('sales-invoices.index') }, { title: 'Create Sales Invoice', href: route('sales-invoices.create') }]}>
             <Head title="Create Sales Invoice" />
 
             <div className="py-12">
@@ -110,6 +110,7 @@ export default function Create({ cropArrivals }: Props) {
                                             value={data.invoice_number}
                                             onChange={(e) => setData('invoice_number', e.target.value)}
                                             readOnly
+                                            disabled    
                                             required
                                         />
                                         {errors.invoice_number && (
@@ -147,8 +148,22 @@ export default function Create({ cropArrivals }: Props) {
                                         </Button>
                                     </div>
 
+                                    {data.items.length === 0 && (
+                                        <div className="flex flex-col items-center justify-center p-8 border-2 border-dashed rounded-lg">
+                                            <p className="text-gray-500 mb-4">No items added yet</p>
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                onClick={addItem}
+                                            >
+                                                <Plus className="w-4 h-4 mr-2" />
+                                                Add your crops here
+                                            </Button>
+                                        </div>
+                                    )}
+
                                     {data.items.map((item, index) => (
-                                        <div key={index} className="grid grid-cols-1 md:grid-cols-6 gap-4 p-4 border rounded-lg">
+                                        <div key={index} className="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr_1fr_1fr_0.5fr] gap-4 p-4 border rounded-lg">
                                             <div className="space-y-2">
                                                 <Label>Stub No.</Label>
                                                 <Popover>

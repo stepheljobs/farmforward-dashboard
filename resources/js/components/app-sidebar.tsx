@@ -66,9 +66,32 @@ const financeNavItems: NavItem[] = [
     },
     {
         title: 'Withdrawal Requests',
-        href: '/withdrawals-requests',
+        href: '/withdrawal-requests',
         icon: DollarSign,
     },
+];
+
+const RegistrationNavItems: NavItem[] = [
+    {
+        title: 'Employees',
+        href: '/employees',
+        icon: Users,
+    },
+    {
+        title: 'Crops',
+        href: '/crops',
+        icon: Sprout,
+    },
+    {
+        title: 'Farmers',
+        href: '/farmers',
+        icon: UserCog,
+    },
+    {
+        title: 'Buyers',
+        href: '/buyers',
+        icon: UserCog,
+    }
 ];
 
 const footerNavItems: NavItem[] = [
@@ -95,6 +118,7 @@ export function AppSidebar() {
                     <NavMain items={operationsNavItems} title="Operations" />
                     <NavMain items={consultantsNavItems} title="Consultants" />
                     <NavMain items={financeNavItems} title="Finance" />
+                    <NavMain items={RegistrationNavItems} title="Registration" />
                 </div>
             </SidebarContent>
 
