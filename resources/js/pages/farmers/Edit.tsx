@@ -1,37 +1,58 @@
 import { Head, useForm } from '@inertiajs/react';
 import { PageProps } from '@/types';
 import AppLayout from '@/layouts/app-layout';
-import { Button, Card, CardContent, CardHeader, CardTitle, Input, Label } from '@/components/ui';
+import { Button, Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useState } from 'react';
+import { Textarea } from '@/components/ui/textarea';
 
 interface Farmer {
     id: number;
     first_name: string;
     last_name: string;
+    middle_initial?: string;
+    birthdate?: string;
     email: string;
-    phone: string;
-    registration_date: string;
+    phone_number: string;
+    sitio_purok?: string;
+    barangay?: string;
+    city: string;
+    province: string;
+    farm_description?: string;
+    farm_size_hectares?: number;
+    farm_count?: number;
+    membership_date: string;
     membership_renewal_date: string;
-    profile_image: string | null;
+    photo: string | null;
 }
 
-interface Props extends PageProps {
+interface Props {
     farmer: Farmer;
 }
 
-export default function Edit({ auth, farmer }: Props) {
+export default function Edit({ farmer }: Props) {
     const { data, setData, put, processing, errors } = useForm({
         first_name: farmer.first_name,
         last_name: farmer.last_name,
+        middle_initial: farmer.middle_initial || '',
+        birthdate: farmer.birthdate || '',
         email: farmer.email,
-        phone: farmer.phone,
-        registration_date: farmer.registration_date,
+        phone_number: farmer.phone_number,
+        sitio_purok: farmer.sitio_purok || '',
+        barangay: farmer.barangay || '',
+        city: farmer.city,
+        province: farmer.province,
+        farm_description: farmer.farm_description || '',
+        farm_size_hectares: farmer.farm_size_hectares?.toString() || '',
+        farm_count: farmer.farm_count?.toString() || '1',
+        membership_date: farmer.membership_date,
         membership_renewal_date: farmer.membership_renewal_date,
-        profile_image: null as File | null,
+        photo: null as File | null,
     });
 
     const [previewUrl, setPreviewUrl] = useState<string | null>(
-        farmer.profile_image ? `/storage/${farmer.profile_image}` : null
+        farmer.photo ? `/storage/${farmer.photo}` : null
     );
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -42,7 +63,7 @@ export default function Edit({ auth, farmer }: Props) {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            setData('profile_image', file);
+            setData('photo', file);
             setPreviewUrl(URL.createObjectURL(file));
         }
     };
@@ -66,8 +87,10 @@ export default function Edit({ auth, farmer }: Props) {
                                             id="first_name"
                                             value={data.first_name}
                                             onChange={e => setData('first_name', e.target.value)}
-                                            error={errors.first_name}
                                         />
+                                        {errors.first_name && (
+                                            <p className="text-sm text-red-500">{errors.first_name}</p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
@@ -76,8 +99,35 @@ export default function Edit({ auth, farmer }: Props) {
                                             id="last_name"
                                             value={data.last_name}
                                             onChange={e => setData('last_name', e.target.value)}
-                                            error={errors.last_name}
                                         />
+                                        {errors.last_name && (
+                                            <p className="text-sm text-red-500">{errors.last_name}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="middle_initial">Middle Initial</Label>
+                                        <Input
+                                            id="middle_initial"
+                                            value={data.middle_initial}
+                                            onChange={e => setData('middle_initial', e.target.value)}
+                                        />
+                                        {errors.middle_initial && (
+                                            <p className="text-sm text-red-500">{errors.middle_initial}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="birthdate">Birth Date</Label>
+                                        <Input
+                                            id="birthdate"
+                                            type="date"
+                                            value={data.birthdate}
+                                            onChange={e => setData('birthdate', e.target.value)}
+                                        />
+                                        {errors.birthdate && (
+                                            <p className="text-sm text-red-500">{errors.birthdate}</p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
@@ -87,29 +137,111 @@ export default function Edit({ auth, farmer }: Props) {
                                             type="email"
                                             value={data.email}
                                             onChange={e => setData('email', e.target.value)}
-                                            error={errors.email}
                                         />
+                                        {errors.email && (
+                                            <p className="text-sm text-red-500">{errors.email}</p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="phone">Phone</Label>
+                                        <Label htmlFor="phone_number">Phone Number</Label>
                                         <Input
-                                            id="phone"
-                                            value={data.phone}
-                                            onChange={e => setData('phone', e.target.value)}
-                                            error={errors.phone}
+                                            id="phone_number"
+                                            value={data.phone_number}
+                                            onChange={e => setData('phone_number', e.target.value)}
                                         />
+                                        {errors.phone_number && (
+                                            <p className="text-sm text-red-500">{errors.phone_number}</p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="registration_date">Registration Date</Label>
+                                        <Label htmlFor="sitio_purok">Sitio/Purok</Label>
                                         <Input
-                                            id="registration_date"
+                                            id="sitio_purok"
+                                            value={data.sitio_purok}
+                                            onChange={e => setData('sitio_purok', e.target.value)}
+                                        />
+                                        {errors.sitio_purok && (
+                                            <p className="text-sm text-red-500">{errors.sitio_purok}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="barangay">Barangay</Label>
+                                        <Input
+                                            id="barangay"
+                                            value={data.barangay}
+                                            onChange={e => setData('barangay', e.target.value)}
+                                        />
+                                        {errors.barangay && (
+                                            <p className="text-sm text-red-500">{errors.barangay}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="city">City</Label>
+                                        <Input
+                                            id="city"
+                                            value={data.city}
+                                            onChange={e => setData('city', e.target.value)}
+                                        />
+                                        {errors.city && (
+                                            <p className="text-sm text-red-500">{errors.city}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="province">Province</Label>
+                                        <Input
+                                            id="province"
+                                            value={data.province}
+                                            onChange={e => setData('province', e.target.value)}
+                                        />
+                                        {errors.province && (
+                                            <p className="text-sm text-red-500">{errors.province}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="farm_size_hectares">Farm Size (Hectares)</Label>
+                                        <Input
+                                            id="farm_size_hectares"
+                                            type="number"
+                                            step="0.01"
+                                            value={data.farm_size_hectares}
+                                            onChange={e => setData('farm_size_hectares', e.target.value)}
+                                        />
+                                        {errors.farm_size_hectares && (
+                                            <p className="text-sm text-red-500">{errors.farm_size_hectares}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="farm_count">Number of Farms</Label>
+                                        <Input
+                                            id="farm_count"
+                                            type="number"
+                                            min="1"
+                                            value={data.farm_count}
+                                            onChange={e => setData('farm_count', e.target.value)}
+                                        />
+                                        {errors.farm_count && (
+                                            <p className="text-sm text-red-500">{errors.farm_count}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="membership_date">Membership Date</Label>
+                                        <Input
+                                            id="membership_date"
                                             type="date"
-                                            value={data.registration_date}
-                                            onChange={e => setData('registration_date', e.target.value)}
-                                            error={errors.registration_date}
+                                            value={data.membership_date}
+                                            onChange={e => setData('membership_date', e.target.value)}
                                         />
+                                        {errors.membership_date && (
+                                            <p className="text-sm text-red-500">{errors.membership_date}</p>
+                                        )}
                                     </div>
 
                                     <div className="space-y-2">
@@ -119,20 +251,36 @@ export default function Edit({ auth, farmer }: Props) {
                                             type="date"
                                             value={data.membership_renewal_date}
                                             onChange={e => setData('membership_renewal_date', e.target.value)}
-                                            error={errors.membership_renewal_date}
                                         />
+                                        {errors.membership_renewal_date && (
+                                            <p className="text-sm text-red-500">{errors.membership_renewal_date}</p>
+                                        )}
                                     </div>
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="profile_image">Profile Image</Label>
+                                    <Label htmlFor="farm_description">Farm Description</Label>
+                                    <Textarea
+                                        id="farm_description"
+                                        value={data.farm_description}
+                                        onChange={e => setData('farm_description', e.target.value)}
+                                    />
+                                    {errors.farm_description && (
+                                        <p className="text-sm text-red-500">{errors.farm_description}</p>
+                                    )}
+                                </div>
+
+                                <div className="space-y-2">
+                                    <Label htmlFor="photo">Profile Photo</Label>
                                     <Input
-                                        id="profile_image"
+                                        id="photo"
                                         type="file"
                                         accept="image/*"
                                         onChange={handleImageChange}
-                                        error={errors.profile_image}
                                     />
+                                    {errors.photo && (
+                                        <p className="text-sm text-red-500">{errors.photo}</p>
+                                    )}
                                     {previewUrl && (
                                         <div className="mt-2">
                                             <img

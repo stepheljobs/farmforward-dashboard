@@ -17,20 +17,26 @@ class Farmer extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'farmer_id_number',
         'first_name',
         'last_name',
+        'middle_initial',
+        'birthdate',
         'email',
         'phone_number',
-        'address',
+        'sitio_purok',
+        'barangay',
         'city',
         'province',
-        'postal_code',
         'farm_description',
         'farm_size_hectares',
+        'farm_count',
         'status',
-        'registration_date',
+        'membership_date',
         'membership_renewal_date',
-        'profile_image',
+        'photo',
+        'active_crop_commitments',
+        'violations'
     ];
 
     /**
@@ -40,7 +46,9 @@ class Farmer extends Model
      */
     protected $casts = [
         'farm_size_hectares' => 'float',
-        'registration_date' => 'date',
+        'farm_count' => 'integer',
+        'birthdate' => 'date',
+        'membership_date' => 'date',
         'membership_renewal_date' => 'date',
     ];
 
@@ -181,6 +189,37 @@ class Farmer extends Model
      */
     public function getFullNameAttribute()
     {
-        return "{$this->first_name} {$this->last_name}";
+        if ($this->middle_initial) {
+            return "{$this->last_name}, {$this->first_name} {$this->middle_initial}.";
+        }
+        return "{$this->last_name}, {$this->first_name}";
+    }
+
+    /**
+     * Get the full address of the farmer.
+     *
+     * @return string
+     */
+    public function getAddressAttribute()
+    {
+        $address = [];
+        
+        if (!empty($this->sitio_purok)) {
+            $address[] = $this->sitio_purok;
+        }
+        
+        if (!empty($this->barangay)) {
+            $address[] = $this->barangay;
+        }
+        
+        if (!empty($this->city)) {
+            $address[] = $this->city;
+        }
+        
+        if (!empty($this->province)) {
+            $address[] = $this->province;
+        }
+        
+        return implode(', ', $address);
     }
 } 

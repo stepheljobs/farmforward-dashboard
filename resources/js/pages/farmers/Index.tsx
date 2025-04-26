@@ -8,11 +8,27 @@ import { PencilIcon } from 'lucide-react';
 
 interface Farmer {
     id: number;
+    farmer_id_number: string;
     first_name: string;
     last_name: string;
+    middle_initial: string | null;
+    birthdate: string;
     email: string;
+    address: string;
     phone_number: string;
-    profile_image: string | null;
+    sitio_purok: string;
+    barangay: string;
+    city: string;
+    province: string;
+    farm_description: string;
+    farm_size_hectares: number;
+    farm_count: number;
+    status: string;
+    membership_date: string;
+    membership_renewal_date: string;
+    photo: string | null;
+    active_crop_commitments: boolean;
+    violations: boolean;
 }
 
 interface Props extends PageProps {
@@ -53,17 +69,21 @@ export default function Index({ auth, farmers }: Props) {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>ID</TableHead>
-                                        <TableHead>Name</TableHead>
-                                        <TableHead>Email</TableHead>
-                                        <TableHead>Phone</TableHead>
+                                        <TableHead>Farmer ID</TableHead>
+                                        <TableHead>Farmer Name</TableHead>
+                                        <TableHead>Phone Number</TableHead>
+                                        <TableHead>Address</TableHead>
+                                        <TableHead>Membership Date</TableHead>
+                                        <TableHead>Membership Status</TableHead>
+                                        <TableHead>Active Commitments</TableHead>
+                                        <TableHead>Violations</TableHead>
                                         <TableHead>Actions</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {farmers.data.map((farmer) => (
                                         <TableRow key={farmer.id}>
-                                            <TableCell className="font-medium">
+                                            <TableCell className="font-medium max-w-[100px] truncate">
                                                 {farmer.id}
                                             </TableCell>
                                             <TableCell className="font-medium">
@@ -78,8 +98,12 @@ export default function Index({ auth, farmers }: Props) {
                                                     {farmer.first_name} {farmer.last_name}
                                                 </div>
                                             </TableCell>
-                                            <TableCell>{farmer.email}</TableCell>
                                             <TableCell>{farmer.phone_number}</TableCell>
+                                            <TableCell>{[farmer.sitio_purok, farmer.barangay, farmer.province].filter(Boolean).join(', ')}</TableCell>
+                                            <TableCell>{new Date(farmer.membership_date).toLocaleDateString()}</TableCell>
+                                            <TableCell>{farmer.status}</TableCell>
+                                            <TableCell>{farmer.active_crop_commitments ? 'Yes' : 'No'}</TableCell>
+                                            <TableCell>{farmer.violations ? 'Yes' : 'No'}</TableCell>
                                             <TableCell>
                                                 <div className="flex gap-2">
                                                     <Link href={route('farmers.show', farmer.id)}>

@@ -13,15 +13,19 @@ export default function Create({ auth }: Props) {
     const { data, setData, post, processing, errors } = useForm({
         first_name: '',
         last_name: '',
+        middle_initial: '',
+        birthdate: '',
         email: '',
         phone_number: '',
-        address: '',
+        sitio_purok: '',
+        barangay: '',
         city: '',
         province: '',
-        postal_code: '',
         farm_description: '',
         farm_size_hectares: '',
-        profile_image: null as File | null,
+        farm_count: '1',
+        photo: null as File | null,
+        farmer_id_number: '',
     });
 
     const [previewImage, setPreviewImage] = useState<string | null>(null);
@@ -34,7 +38,7 @@ export default function Create({ auth }: Props) {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            setData('profile_image', file);
+            setData('photo', file);
             const reader = new FileReader();
             reader.onloadend = () => {
                 setPreviewImage(reader.result as string);
@@ -90,6 +94,47 @@ export default function Create({ auth }: Props) {
                                     </div>
 
                                     <div className="space-y-2">
+                                        <Label htmlFor="middle_initial">Middle Initial</Label>
+                                        <Input
+                                            id="middle_initial"
+                                            name="middle_initial"
+                                            value={data.middle_initial}
+                                            onChange={handleInputChange}
+                                        />
+                                        {errors.middle_initial && (
+                                            <p className="text-sm text-red-500">{errors.middle_initial}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="farmer_id_number">Farmer ID Number</Label>
+                                        <Input
+                                            id="farmer_id_number"
+                                            name="farmer_id_number"
+                                            value={data.farmer_id_number}
+                                            onChange={handleInputChange}
+                                            required
+                                        />
+                                        {errors.farmer_id_number && (
+                                            <p className="text-sm text-red-500">{errors.farmer_id_number}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="birthdate">Birth Date</Label>
+                                        <Input
+                                            id="birthdate"
+                                            name="birthdate"
+                                            type="date"
+                                            value={data.birthdate}
+                                            onChange={handleInputChange}
+                                        />
+                                        {errors.birthdate && (
+                                            <p className="text-sm text-red-500">{errors.birthdate}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
                                         <Label htmlFor="email">Email</Label>
                                         <Input
                                             id="email"
@@ -119,16 +164,28 @@ export default function Create({ auth }: Props) {
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="address">Address</Label>
+                                        <Label htmlFor="sitio_purok">Sitio/Purok</Label>
                                         <Input
-                                            id="address"
-                                            name="address"
-                                            value={data.address}
+                                            id="sitio_purok"
+                                            name="sitio_purok"
+                                            value={data.sitio_purok}
                                             onChange={handleInputChange}
-                                            required
                                         />
-                                        {errors.address && (
-                                            <p className="text-sm text-red-500">{errors.address}</p>
+                                        {errors.sitio_purok && (
+                                            <p className="text-sm text-red-500">{errors.sitio_purok}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="barangay">Barangay</Label>
+                                        <Input
+                                            id="barangay"
+                                            name="barangay"
+                                            value={data.barangay}
+                                            onChange={handleInputChange}
+                                        />
+                                        {errors.barangay && (
+                                            <p className="text-sm text-red-500">{errors.barangay}</p>
                                         )}
                                     </div>
 
@@ -161,20 +218,6 @@ export default function Create({ auth }: Props) {
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="postal_code">Postal Code</Label>
-                                        <Input
-                                            id="postal_code"
-                                            name="postal_code"
-                                            value={data.postal_code}
-                                            onChange={handleInputChange}
-                                            required
-                                        />
-                                        {errors.postal_code && (
-                                            <p className="text-sm text-red-500">{errors.postal_code}</p>
-                                        )}
-                                    </div>
-
-                                    <div className="space-y-2">
                                         <Label htmlFor="farm_size_hectares">Farm Size (Hectares)</Label>
                                         <Input
                                             id="farm_size_hectares"
@@ -191,13 +234,30 @@ export default function Create({ auth }: Props) {
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="profile_image">Profile Image</Label>
+                                        <Label htmlFor="farm_count">Number of Farms</Label>
                                         <Input
-                                            id="profile_image"
-                                            name="profile_image"
+                                            id="farm_count"
+                                            name="farm_count"
+                                            type="number"
+                                            min="1"
+                                            value={data.farm_count}
+                                            onChange={handleInputChange}
+                                            required
+                                        />
+                                        {errors.farm_count && (
+                                            <p className="text-sm text-red-500">{errors.farm_count}</p>
+                                        )}
+                                    </div>
+
+                                    <div className="space-y-2">
+                                        <Label htmlFor="photo">Profile Photo</Label>
+                                        <Input
+                                            id="photo"
+                                            name="photo"
                                             type="file"
                                             accept="image/*"
                                             onChange={handleImageChange}
+                                            className="border-2 border-dashed rounded-lg aspect-square w-[400px] p-2"
                                         />
                                         {previewImage && (
                                             <img
@@ -206,8 +266,8 @@ export default function Create({ auth }: Props) {
                                                 className="mt-2 w-32 h-32 object-cover rounded"
                                             />
                                         )}
-                                        {errors.profile_image && (
-                                            <p className="text-sm text-red-500">{errors.profile_image}</p>
+                                        {errors.photo && (
+                                            <p className="text-sm text-red-500">{errors.photo}</p>
                                         )}
                                     </div>
                                 </div>

@@ -27,6 +27,8 @@ class UpdateFarmerRequest extends FormRequest
         return [
             'first_name' => 'sometimes|required|string|max:255',
             'last_name' => 'sometimes|required|string|max:255',
+            'middle_initial' => 'nullable|string|max:10',
+            'birthdate' => 'nullable|date',
             'email' => [
                 'sometimes',
                 'required',
@@ -35,16 +37,17 @@ class UpdateFarmerRequest extends FormRequest
                 'max:255',
             ],
             'phone_number' => 'sometimes|required|string|max:20',
-            'address' => 'sometimes|required|string|max:255',
+            'sitio_purok' => 'nullable|string|max:255',
+            'barangay' => 'nullable|string|max:255',
             'city' => 'sometimes|required|string|max:100',
             'province' => 'sometimes|required|string|max:100',
-            'postal_code' => 'sometimes|required|string|max:20',
             'farm_description' => 'nullable|string',
             'farm_size_hectares' => 'nullable|numeric|min:0',
+            'farm_count' => 'nullable|integer|min:1',
             'status' => 'nullable|string|in:active,inactive,pending',
-            'registration_date' => 'nullable|date',
+            'membership_date' => 'nullable|date',
             'membership_renewal_date' => 'nullable|date',
-            'profile_image' => 'nullable|image|max:2048',
+            'photo' => 'nullable|image|max:2048',
         ];
     }
 } 

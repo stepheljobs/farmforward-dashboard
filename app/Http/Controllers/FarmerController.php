@@ -48,14 +48,14 @@ class FarmerController extends Controller
     {
         $validated = $request->validated();
         
-        // Handle profile image upload if provided
-        if ($request->hasFile('profile_image')) {
-            $validated['profile_image'] = $request->file('profile_image')
+        // Handle photo upload if provided
+        if ($request->hasFile('photo')) {
+            $validated['photo'] = $request->file('photo')
                 ->store('farmers/profile-images', 'public');
         }
         
         // Set default values for dates if not provided
-        $validated['registration_date'] = $validated['registration_date'] ?? now();
+        $validated['membership_date'] = $validated['membership_date'] ?? now();
         $validated['membership_renewal_date'] = $validated['membership_renewal_date'] ?? now()->addYear();
         
         $farmer = Farmer::create($validated);
@@ -108,14 +108,14 @@ class FarmerController extends Controller
     {
         $validated = $request->validated();
         
-        // Handle profile image upload if provided
-        if ($request->hasFile('profile_image')) {
+        // Handle photo upload if provided
+        if ($request->hasFile('photo')) {
             // Delete old image if exists
-            if ($farmer->profile_image) {
-                Storage::disk('public')->delete($farmer->profile_image);
+            if ($farmer->photo) {
+                Storage::disk('public')->delete($farmer->photo);
             }
             
-            $validated['profile_image'] = $request->file('profile_image')
+            $validated['photo'] = $request->file('photo')
                 ->store('farmers/profile-images', 'public');
         }
         
