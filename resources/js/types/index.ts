@@ -19,4 +19,16 @@ export interface Crop {
   status: string;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface Buyer {
+  id: number;
+  name: string;
+  buyer_id: string;
+  phone_number: string;
+  address: string;
+  status: string;
+  destination: string;
+  created_at?: string;
+  updated_at?: string;
 } 

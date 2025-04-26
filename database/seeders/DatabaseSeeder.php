@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             SalesInvoiceSeeder::class,
             CropCommitmentSeeder::class,
             SaleSeeder::class,
+            BuyerSeeder::class,
         ]);
     }
 }

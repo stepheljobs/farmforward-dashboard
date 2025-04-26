@@ -12,6 +12,7 @@ use App\Http\Controllers\SalesOverviewController;
 use App\Http\Controllers\WithdrawalRequestController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CropController;
+use App\Http\Controllers\BuyerController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -56,6 +57,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Crops routes
     Route::resource('crops', CropController::class);
     Route::get('crops-export', [CropController::class, 'export'])->name('crops.export');
+    
+    // Buyers routes
+    Route::resource('buyers', BuyerController::class);
+    Route::get('buyers-export', [BuyerController::class, 'export'])->name('buyers.export');
 });
 
 require __DIR__.'/settings.php';
