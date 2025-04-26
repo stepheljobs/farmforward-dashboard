@@ -38,11 +38,11 @@ const EmployeeIndex: React.FC<Props> = ({ employees }) => {
           <TableCaption>List of all employees</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead>Name</TableHead>
+              <TableHead>Employee Name</TableHead>
               <TableHead>Employee ID</TableHead>
               <TableHead>Position</TableHead>
-              <TableHead>Email</TableHead>
               <TableHead>Phone</TableHead>
+              <TableHead>City/Municipality</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -50,18 +50,18 @@ const EmployeeIndex: React.FC<Props> = ({ employees }) => {
           <TableBody>
             {employees.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-8">
+                <TableCell colSpan={11} className="text-center py-8">
                   No employees found. Create your first employee.
                 </TableCell>
               </TableRow>
             ) : (
               employees.map((employee) => (
                 <TableRow key={employee.id}>
-                  <TableCell className="font-medium">{employee.name}</TableCell>
+                  <TableCell className="font-medium">{`${employee.last_name}, ${employee.first_name} ${employee.middle_initial}`}</TableCell>
                   <TableCell>{employee.employee_id}</TableCell>
-                  <TableCell>{employee.position}</TableCell>
-                  <TableCell>{employee.email}</TableCell>
+                  <TableCell className="max-w-[200px] truncate">{employee.position}</TableCell>
                   <TableCell>{employee.phone_number}</TableCell>
+                  <TableCell>{employee.address_city}</TableCell>
                   <TableCell>
                     <span className={`px-2 py-1 rounded-full text-xs ${
                       employee.employment_status === 'Active' 

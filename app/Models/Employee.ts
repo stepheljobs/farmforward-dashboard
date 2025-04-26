@@ -1,9 +1,18 @@
 export interface Employee {
-  name: string;
+  lastName: string;
+  firstName: string;
+  middleInitial: string;
   employeeId: number;
   position: string;
   email: string;
   phoneNumber: string;
-  address: string;
+  address: {
+    sitio: string;
+    barangay: string;
+    city: string;
+    province: string;
+  };
   employmentStatus: string;
+  dateHired: Date;
+  dateSeparated?: Date;
 } 

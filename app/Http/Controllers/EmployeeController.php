@@ -13,7 +13,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::orderBy('name')->get();
+        $employees = Employee::orderBy('last_name')->get();
         return Inertia::render('Employees/Index', ['employees' => $employees]);
     }
 

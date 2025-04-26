@@ -1,12 +1,19 @@
 export interface Employee {
   id: number;
-  name: string;
+  last_name: string;
+  first_name: string;
+  middle_initial: string | null;
   employee_id: number;
   position: string;
   email: string;
   phone_number: string;
-  address: string;
+  address_sitio: string;
+  address_barangay: string;
+  address_city: string;
+  address_province: string;
   employment_status: string;
+  date_hired: string;
+  date_separated: string | null;
   created_at?: string;
   updated_at?: string;
 }

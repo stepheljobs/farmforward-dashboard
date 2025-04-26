@@ -24,13 +24,20 @@ import { Label } from '@/components/ui/label';
 
 const EmployeeCreate: React.FC = () => {
   const form = useForm({
-    name: '',
+    last_name: '',
+    first_name: '',
+    middle_initial: '',
     employee_id: '',
     position: '',
     email: '',
     phone_number: '',
-    address: '',
+    address_sitio: '',
+    address_barangay: '',
+    address_city: '',
+    address_province: '',
     employment_status: 'Active',
+    date_hired: '',
+    date_separated: '',
   });
 
   const onSubmit = (e: React.FormEvent) => {
@@ -39,135 +46,243 @@ const EmployeeCreate: React.FC = () => {
   };
 
   return (
-    <AppLayout breadcrumbs={[{ title: 'Employees', href: route('employees.index') }]}>
+    <AppLayout breadcrumbs={[
+      { title: 'Employees', href: route('employees.index') },
+      { title: 'Create', href: route('employees.create') }
+    ]}>
       <Head title="Create Employee" />
-      
-      <div className="mb-6">
-        <Link href={route('employees.index')}>
-          <Button variant="outline" size="sm">
-            <ArrowLeftIcon className="w-4 h-4 mr-2" />
-            Back to Employees
-          </Button>
-        </Link>
+      <div className="container py-8">
+        <div className="flex items-center mb-6">
+          <Link href={route('employees.index')}>
+            <Button variant="outline" size="icon" className="mr-4">
+              <ArrowLeftIcon className="h-4 w-4" />
+            </Button>
+          </Link>
+          <h1 className="text-2xl font-bold">Create Employee</h1>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Employee Information</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={onSubmit} className="space-y-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <Label htmlFor="last_name">Last Name</Label>
+                  <Input
+                    id="last_name"
+                    value={form.data.last_name}
+                    onChange={e => form.setData('last_name', e.target.value)}
+                    className="mt-1"
+                  />
+                  {form.errors.last_name && (
+                    <p className="text-red-500 text-sm mt-1">{form.errors.last_name}</p>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="first_name">First Name</Label>
+                  <Input
+                    id="first_name"
+                    value={form.data.first_name}
+                    onChange={e => form.setData('first_name', e.target.value)}
+                    className="mt-1"
+                  />
+                  {form.errors.first_name && (
+                    <p className="text-red-500 text-sm mt-1">{form.errors.first_name}</p>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="middle_initial">Middle Initial</Label>
+                  <Input
+                    id="middle_initial"
+                    value={form.data.middle_initial}
+                    onChange={e => form.setData('middle_initial', e.target.value)}
+                    className="mt-1"
+                    maxLength={1}
+                  />
+                  {form.errors.middle_initial && (
+                    <p className="text-red-500 text-sm mt-1">{form.errors.middle_initial}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label htmlFor="employee_id">Employee ID</Label>
+                  <Input
+                    id="employee_id"
+                    value={form.data.employee_id}
+                    onChange={e => form.setData('employee_id', e.target.value)}
+                    className="mt-1"
+                  />
+                  {form.errors.employee_id && (
+                    <p className="text-red-500 text-sm mt-1">{form.errors.employee_id}</p>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="position">Position</Label>
+                  <Input
+                    id="position"
+                    value={form.data.position}
+                    onChange={e => form.setData('position', e.target.value)}
+                    className="mt-1"
+                  />
+                  {form.errors.position && (
+                    <p className="text-red-500 text-sm mt-1">{form.errors.position}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={form.data.email}
+                    onChange={e => form.setData('email', e.target.value)}
+                    className="mt-1"
+                  />
+                  {form.errors.email && (
+                    <p className="text-red-500 text-sm mt-1">{form.errors.email}</p>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="phone_number">Phone Number</Label>
+                  <Input
+                    id="phone_number"
+                    value={form.data.phone_number}
+                    onChange={e => form.setData('phone_number', e.target.value)}
+                    className="mt-1"
+                  />
+                  {form.errors.phone_number && (
+                    <p className="text-red-500 text-sm mt-1">{form.errors.phone_number}</p>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-medium mb-3">Address</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="address_sitio">Sitio/Purok/Street/Subdivision</Label>
+                    <Input
+                      id="address_sitio"
+                      value={form.data.address_sitio}
+                      onChange={e => form.setData('address_sitio', e.target.value)}
+                      className="mt-1"
+                    />
+                    {form.errors.address_sitio && (
+                      <p className="text-red-500 text-sm mt-1">{form.errors.address_sitio}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="address_barangay">Barangay</Label>
+                    <Input
+                      id="address_barangay"
+                      value={form.data.address_barangay}
+                      onChange={e => form.setData('address_barangay', e.target.value)}
+                      className="mt-1"
+                    />
+                    {form.errors.address_barangay && (
+                      <p className="text-red-500 text-sm mt-1">{form.errors.address_barangay}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="address_city">City/Municipality</Label>
+                    <Input
+                      id="address_city"
+                      value={form.data.address_city}
+                      onChange={e => form.setData('address_city', e.target.value)}
+                      className="mt-1"
+                    />
+                    {form.errors.address_city && (
+                      <p className="text-red-500 text-sm mt-1">{form.errors.address_city}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <Label htmlFor="address_province">Province</Label>
+                    <Input
+                      id="address_province"
+                      value={form.data.address_province}
+                      onChange={e => form.setData('address_province', e.target.value)}
+                      className="mt-1"
+                    />
+                    {form.errors.address_province && (
+                      <p className="text-red-500 text-sm mt-1">{form.errors.address_province}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <Label htmlFor="employment_status">Employment Status</Label>
+                  <Select
+                    value={form.data.employment_status}
+                    onValueChange={value => form.setData('employment_status', value)}
+                  >
+                    <SelectTrigger id="employment_status" className="mt-1">
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Active">Active</SelectItem>
+                      <SelectItem value="Inactive">Inactive</SelectItem>
+                      <SelectItem value="On Leave">On Leave</SelectItem>
+                      <SelectItem value="Terminated">Terminated</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {form.errors.employment_status && (
+                    <p className="text-red-500 text-sm mt-1">{form.errors.employment_status}</p>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="date_hired">Date Hired</Label>
+                  <Input
+                    id="date_hired"
+                    type="date"
+                    value={form.data.date_hired}
+                    onChange={e => form.setData('date_hired', e.target.value)}
+                    className="mt-1"
+                  />
+                  {form.errors.date_hired && (
+                    <p className="text-red-500 text-sm mt-1">{form.errors.date_hired}</p>
+                  )}
+                </div>
+
+                <div>
+                  <Label htmlFor="date_separated">Date Separated</Label>
+                  <Input
+                    id="date_separated"
+                    type="date"
+                    value={form.data.date_separated}
+                    onChange={e => form.setData('date_separated', e.target.value)}
+                    className="mt-1"
+                  />
+                  {form.errors.date_separated && (
+                    <p className="text-red-500 text-sm mt-1">{form.errors.date_separated}</p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex justify-end">
+                <Button type="submit" disabled={form.processing}>
+                  {form.processing ? 'Saving...' : 'Save Employee'}
+                </Button>
+              </div>
+            </form>
+          </CardContent>
+        </Card>
       </div>
-      
-      <Card>
-        <CardHeader>
-          <CardTitle>Create New Employee</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={onSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  placeholder="Enter employee name"
-                  value={form.data.name}
-                  onChange={e => form.setData('name', e.target.value)}
-                />
-                {form.errors.name && (
-                  <p className="text-sm text-red-600">{form.errors.name}</p>
-                )}
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="employee_id">Employee ID</Label>
-                <Input
-                  id="employee_id"
-                  type="number"
-                  placeholder="Enter employee ID"
-                  value={form.data.employee_id}
-                  onChange={e => form.setData('employee_id', e.target.value)}
-                />
-                {form.errors.employee_id && (
-                  <p className="text-sm text-red-600">{form.errors.employee_id}</p>
-                )}
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="position">Position</Label>
-                <Input
-                  id="position"
-                  placeholder="Enter position"
-                  value={form.data.position}
-                  onChange={e => form.setData('position', e.target.value)}
-                />
-                {form.errors.position && (
-                  <p className="text-sm text-red-600">{form.errors.position}</p>
-                )}
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="Enter email address"
-                  value={form.data.email}
-                  onChange={e => form.setData('email', e.target.value)}
-                />
-                {form.errors.email && (
-                  <p className="text-sm text-red-600">{form.errors.email}</p>
-                )}
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="phone_number">Phone Number</Label>
-                <Input
-                  id="phone_number"
-                  placeholder="Enter phone number"
-                  value={form.data.phone_number}
-                  onChange={e => form.setData('phone_number', e.target.value)}
-                />
-                {form.errors.phone_number && (
-                  <p className="text-sm text-red-600">{form.errors.phone_number}</p>
-                )}
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="employment_status">Employment Status</Label>
-                <Select
-                  value={form.data.employment_status}
-                  onValueChange={value => form.setData('employment_status', value)}
-                >
-                  <SelectTrigger id="employment_status">
-                    <SelectValue placeholder="Select status" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Active">Active</SelectItem>
-                    <SelectItem value="Inactive">Inactive</SelectItem>
-                    <SelectItem value="On Leave">On Leave</SelectItem>
-                    <SelectItem value="Terminated">Terminated</SelectItem>
-                  </SelectContent>
-                </Select>
-                {form.errors.employment_status && (
-                  <p className="text-sm text-red-600">{form.errors.employment_status}</p>
-                )}
-              </div>
-              
-              <div className="col-span-1 md:col-span-2 space-y-2">
-                <Label htmlFor="address">Address</Label>
-                <Input
-                  id="address"
-                  placeholder="Enter address"
-                  value={form.data.address}
-                  onChange={e => form.setData('address', e.target.value)}
-                />
-                {form.errors.address && (
-                  <p className="text-sm text-red-600">{form.errors.address}</p>
-                )}
-              </div>
-            </div>
-            
-            <div className="flex justify-end">
-              <Button type="submit" disabled={form.processing}>
-                {form.processing ? 'Creating...' : 'Create Employee'}
-              </Button>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
     </AppLayout>
   );
 };
