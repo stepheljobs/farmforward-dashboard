@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -12,22 +13,32 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('farmers', function (Blueprint $table) {
-            // Rename existing columns
-            $table->renameColumn('registration_date', 'membership_date');
-            $table->renameColumn('profile_image', 'photo');
+            // Skip renaming columns as they already have the correct names
             
-            // Drop address and postal_code columns
-            $table->dropColumn(['address', 'postal_code']);
+            // The postal_code column already exists, so only drop address column if it exists
+            if (Schema::hasColumn('farmers', 'address')) {
+                $table->dropColumn('address');
+            }
             
-            // Add new columns
-            $table->string('farmer_id_number')->after('id')->unique();
-            $table->string('middle_initial')->nullable()->after('last_name');
-            $table->date('birthdate')->nullable()->after('middle_initial');
-            $table->string('sitio_purok')->nullable()->after('phone_number');
-            $table->string('barangay')->nullable()->after('sitio_purok');
-            $table->integer('farm_count')->default(1)->after('farm_size_hectares');
-            $table->integer('active_crop_commitments')->default(0)->after('photo');
-            $table->integer('violations')->default(0)->after('active_crop_commitments');
+            // Add new columns that don't exist yet
+            if (!Schema::hasColumn('farmers', 'farmer_id_number')) {
+                $table->string('farmer_id_number')->after('id')->unique();
+            }
+            
+            // These columns already exist in the table, so we'll skip them
+            // The following are existing columns per our check: 
+            // middle_initial, birthdate, sitio_purok, barangay, farm_count
+            
+            // Convert active_crop_commitments and violations from boolean to integer if they exist as boolean
+            if (Schema::hasColumn('farmers', 'active_crop_commitments') && 
+                DB::getSchemaBuilder()->getColumnType('farmers', 'active_crop_commitments') === 'boolean') {
+                $table->integer('active_crop_commitments')->default(0)->change();
+            }
+            
+            if (Schema::hasColumn('farmers', 'violations') && 
+                DB::getSchemaBuilder()->getColumnType('farmers', 'violations') === 'boolean') {
+                $table->integer('violations')->default(0)->change();
+            }
         });
     }
 
@@ -37,25 +48,26 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('farmers', function (Blueprint $table) {
-            // Rename columns back
-            $table->renameColumn('membership_date', 'registration_date');
-            $table->renameColumn('photo', 'profile_image');
+            // No need to rename columns back as we didn't rename them
             
-            // Add back old columns
-            $table->string('address')->after('phone_number');
-            $table->string('postal_code')->nullable()->after('province');
+            // Add back address column if it was removed
+            $table->string('address')->after('phone_number')->nullable();
             
-            // Drop new columns
-            $table->dropColumn([
-                'farmer_id_number',
-                'middle_initial',
-                'birthdate',
-                'sitio_purok',
-                'barangay',
-                'farm_count',
-                'active_crop_commitments',
-                'violations'
-            ]);
+            // Drop farmer_id_number if we added it
+            if (Schema::hasColumn('farmers', 'farmer_id_number')) {
+                $table->dropColumn('farmer_id_number');
+            }
+            
+            // Convert active_crop_commitments and violations back to boolean if they exist as integer
+            if (Schema::hasColumn('farmers', 'active_crop_commitments') && 
+                DB::getSchemaBuilder()->getColumnType('farmers', 'active_crop_commitments') === 'integer') {
+                $table->boolean('active_crop_commitments')->default(false)->change();
+            }
+            
+            if (Schema::hasColumn('farmers', 'violations') && 
+                DB::getSchemaBuilder()->getColumnType('farmers', 'violations') === 'integer') {
+                $table->boolean('violations')->default(false)->change();
+            }
         });
     }
 }; 

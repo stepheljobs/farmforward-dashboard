@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('account_name')->nullable()->after('account_number');
             $table->foreignId('approved_by')->nullable()->constrained('users')->after('process_date');
             $table->timestamp('approved_at')->nullable()->after('approved_by');
-            $table->foreignId('sales_id')->nullable()->constrained()->after('farmer_id');
+            $table->foreignId('sales_id')->nullable()->after('farmer_id');
             $table->string('reference_number')->nullable()->after('status');
         });
     }
