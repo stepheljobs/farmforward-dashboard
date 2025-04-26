@@ -23,7 +23,7 @@ const BuyerIndex: React.FC<Props> = ({ buyers }) => {
   return (
     <AppLayout breadcrumbs={[{ title: 'Buyers', href: route('buyers.index') }]}>
       <Head title="Buyers" />
-      <div className="container p-8">
+      <div className="container py-8">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Buyers</h1>
           <div className="flex gap-2">
@@ -48,7 +48,8 @@ const BuyerIndex: React.FC<Props> = ({ buyers }) => {
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Buyer ID</TableHead>
-              <TableHead>Phone Number</TableHead>
+              <TableHead>Contact</TableHead>
+              <TableHead>Province</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -56,16 +57,23 @@ const BuyerIndex: React.FC<Props> = ({ buyers }) => {
           <TableBody>
             {buyers.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-8">
+                <TableCell colSpan={6} className="text-center py-8">
                   No buyers found. Create your first buyer.
                 </TableCell>
               </TableRow>
             ) : (
               buyers.map((buyer) => (
                 <TableRow key={buyer.id}>
-                  <TableCell className="font-medium">{buyer.name}</TableCell>
+                  <TableCell className="font-medium">
+                    {buyer.full_name}
+                    {buyer.nickname && <span className="text-xs text-gray-500 block">"{buyer.nickname}"</span>}
+                  </TableCell>
                   <TableCell>{buyer.buyer_id}</TableCell>
-                  <TableCell>{buyer.phone_number}</TableCell>
+                  <TableCell>
+                    {buyer.phone_number && <div>{buyer.phone_number}</div>}
+                    {buyer.email && <div className="text-xs text-gray-500">{buyer.email}</div>}
+                  </TableCell>
+                  <TableCell>{buyer.province || '-'}</TableCell>
                   <TableCell>
                     <span className={`px-2 py-1 rounded-full text-xs ${
                       buyer.status === 'Active' 

@@ -22,11 +22,11 @@ const BuyerShow: React.FC<Props> = ({ buyer }) => {
     <AppLayout
       breadcrumbs={[
         { title: 'Buyers', href: route('buyers.index') },
-        { title: buyer.name, href: route('buyers.show', buyer.id) },
+        { title: buyer.full_name, href: route('buyers.show', buyer.id) },
       ]}
     >
-      <Head title={`Buyer: ${buyer.name}`} />
-      <div className="container p-8">
+      <Head title={`Buyer: ${buyer.full_name}`} />
+      <div className="container py-8">
         <div className="flex justify-between items-center mb-6">
           <Link href={route('buyers.index')}>
             <Button variant="ghost">
@@ -53,42 +53,113 @@ const BuyerShow: React.FC<Props> = ({ buyer }) => {
 
         <Card className="mb-6">
           <CardHeader>
-            <CardTitle>{buyer.name}</CardTitle>
-            <CardDescription>Buyer information</CardDescription>
+            <CardTitle>{buyer.full_name}</CardTitle>
+            <CardDescription>
+              {buyer.nickname && <span className="font-medium">"{buyer.nickname}"</span>}
+              {buyer.nickname && " - "}
+              Buyer information
+            </CardDescription>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <p className="text-sm font-semibold text-gray-500">Name</p>
-              <p>{buyer.name}</p>
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-gray-500">Buyer ID</p>
-              <p>{buyer.buyer_id}</p>
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-gray-500">Phone Number</p>
-              <p>{buyer.phone_number || '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-gray-500">Address</p>
-              <p>{buyer.address || '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-gray-500">Destination</p>
-              <p>{buyer.destination || '-'}</p>
-            </div>
-            <div>
-              <p className="text-sm font-semibold text-gray-500">Status</p>
-              <p>
-                <span className={`px-2 py-1 rounded-full text-xs ${buyer.status === 'Active'
-                    ? 'bg-green-100 text-green-800'
-                    : buyer.status === 'Inactive'
-                      ? 'bg-red-100 text-red-800'
-                      : 'bg-yellow-100 text-yellow-800'
-                  }`}>
-                  {buyer.status}
-                </span>
-              </p>
+          <CardContent>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-medium border-b pb-2">Personal Information</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <div>
+                      <p className="text-sm font-semibold text-gray-500">Buyer ID</p>
+                      <p>{buyer.buyer_id}</p>
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-500">Full Name</p>
+                      <p>{buyer.full_name}</p>
+                    </div>
+                    {buyer.birthdate && (
+                      <div>
+                        <p className="text-sm font-semibold text-gray-500">Birthdate</p>
+                        <p>{new Date(buyer.birthdate).toLocaleDateString()}</p>
+                      </div>
+                    )}
+                    <div>
+                      <p className="text-sm font-semibold text-gray-500">Status</p>
+                      <p>
+                        <span className={`px-2 py-1 rounded-full text-xs ${buyer.status === 'Active'
+                            ? 'bg-green-100 text-green-800'
+                            : buyer.status === 'Inactive'
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-yellow-100 text-yellow-800'
+                          }`}>
+                          {buyer.status}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-medium border-b pb-2">Contact Information</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    {buyer.phone_number && (
+                      <div>
+                        <p className="text-sm font-semibold text-gray-500">Phone Number</p>
+                        <p>{buyer.phone_number}</p>
+                      </div>
+                    )}
+                    {buyer.email && (
+                      <div>
+                        <p className="text-sm font-semibold text-gray-500">Email</p>
+                        <p>{buyer.email}</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-medium border-b pb-2">Address Information</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    {buyer.sitio_purok_subdivision && (
+                      <div>
+                        <p className="text-sm font-semibold text-gray-500">Sitio / Purok / Subdivision</p>
+                        <p>{buyer.sitio_purok_subdivision}</p>
+                      </div>
+                    )}
+                    {buyer.barangay && (
+                      <div>
+                        <p className="text-sm font-semibold text-gray-500">Barangay</p>
+                        <p>{buyer.barangay}</p>
+                      </div>
+                    )}
+                    {buyer.city_municipality && (
+                      <div>
+                        <p className="text-sm font-semibold text-gray-500">City / Municipality</p>
+                        <p>{buyer.city_municipality}</p>
+                      </div>
+                    )}
+                    {buyer.province && (
+                      <div>
+                        <p className="text-sm font-semibold text-gray-500">Province</p>
+                        <p>{buyer.province}</p>
+                      </div>
+                    )}
+                  </div>
+                  <div className="mt-4">
+                    <p className="text-sm font-semibold text-gray-500">Complete Address</p>
+                    <p>{buyer.complete_address || '-'}</p>
+                  </div>
+                </div>
+
+                {buyer.destination && (
+                  <div>
+                    <h3 className="text-lg font-medium border-b pb-2">Additional Information</h3>
+                    <div className="mt-4">
+                      <p className="text-sm font-semibold text-gray-500">Destination</p>
+                      <p>{buyer.destination}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </CardContent>
         </Card>

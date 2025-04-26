@@ -13,11 +13,19 @@ return new class extends Migration
     {
         Schema::create('buyers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nickname')->nullable();
+            $table->string('last_name');
+            $table->string('first_name');
+            $table->string('middle_initial')->nullable();
             $table->string('buyer_id')->unique();
+            $table->date('birthdate')->nullable();
+            $table->string('email')->nullable();
             $table->string('phone_number')->nullable();
-            $table->string('address')->nullable();
-            $table->string('status', 50);
+            $table->string('sitio_purok_subdivision')->nullable();
+            $table->string('barangay')->nullable();
+            $table->string('city_municipality')->nullable();
+            $table->string('province')->nullable();
+            $table->string('status');
             $table->string('destination')->nullable();
             $table->timestamps();
         });

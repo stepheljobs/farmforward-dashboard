@@ -23,12 +23,22 @@ export interface Crop {
 
 export interface Buyer {
   id: number;
-  name: string;
+  nickname?: string;
+  last_name: string;
+  first_name: string;
+  middle_initial?: string;
+  full_name: string; // This is a virtual attribute
   buyer_id: string;
-  phone_number: string;
-  address: string;
+  birthdate?: string;
+  email?: string;
+  phone_number?: string;
+  sitio_purok_subdivision?: string;
+  barangay?: string;
+  city_municipality?: string;
+  province?: string;
+  complete_address: string; // This is a virtual attribute
   status: string;
-  destination: string;
+  destination?: string;
   created_at?: string;
   updated_at?: string;
 } 
