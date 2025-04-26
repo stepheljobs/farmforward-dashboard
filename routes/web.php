@@ -11,6 +11,7 @@ use App\Http\Controllers\CropForecastController;
 use App\Http\Controllers\SalesOverviewController;
 use App\Http\Controllers\WithdrawalRequestController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\CropController;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -51,6 +52,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // Employees routes
     Route::resource('employees', EmployeeController::class);
+    
+    // Crops routes
+    Route::resource('crops', CropController::class);
+    Route::get('crops-export', [CropController::class, 'export'])->name('crops.export');
 });
 
 require __DIR__.'/settings.php';

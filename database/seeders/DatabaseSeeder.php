@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             CropTypeSeeder::class,
+            CropSeeder::class,
             FarmerSeeder::class,
             FarmSeeder::class,
             CropArrivalSeeder::class,

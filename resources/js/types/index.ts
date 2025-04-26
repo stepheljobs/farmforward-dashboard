@@ -9,4 +9,14 @@ export interface Employee {
   employment_status: string;
   created_at?: string;
   updated_at?: string;
+}
+
+export interface Crop {
+  id: number;
+  name: string;
+  variety: string;
+  sku: string;
+  status: string;
+  created_at?: string;
+  updated_at?: string;
 } 
