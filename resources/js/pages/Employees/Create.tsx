@@ -125,12 +125,21 @@ const EmployeeCreate: React.FC = () => {
 
                 <div>
                   <Label htmlFor="position">Position</Label>
-                  <Input
+                  <select
                     id="position"
                     value={form.data.position}
                     onChange={e => form.setData('position', e.target.value)}
-                    className="mt-1"
-                  />
+                    className="mt-1 w-full rounded-md border border-input bg-background px-3 py-2"
+                  >
+                    <option value="">Select a position</option>
+                    <option value="Logistics">Logistics</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Cashiers">Cashiers</option>
+                    <option value="Consultant">Consultant</option>
+                    <option value="Accounting Staff">Accounting Staff</option>
+                    <option value="Administrator">Administrator</option>
+                    <option value="System Admin">System Admin</option>
+                  </select>
                   {form.errors.position && (
                     <p className="text-red-500 text-sm mt-1">{form.errors.position}</p>
                   )}
@@ -234,10 +243,10 @@ const EmployeeCreate: React.FC = () => {
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Active">Active</SelectItem>
-                      <SelectItem value="Inactive">Inactive</SelectItem>
-                      <SelectItem value="On Leave">On Leave</SelectItem>
-                      <SelectItem value="Terminated">Terminated</SelectItem>
+                      <SelectItem value="TRAINEE">TRAINEE</SelectItem>
+                      <SelectItem value="PROBATIONARY">PROBATIONARY</SelectItem>
+                      <SelectItem value="REGULAR">REGULAR</SelectItem>
+                      <SelectItem value="SEPARATED">SEPARATED</SelectItem>
                     </SelectContent>
                   </Select>
                   {form.errors.employment_status && (
